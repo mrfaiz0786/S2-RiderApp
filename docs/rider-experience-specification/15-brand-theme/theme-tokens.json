@@ -1,0 +1,59 @@
+{
+  "name": "YBM Warm Momentum",
+  "version": "1.0",
+  "sourceOfTruth": "mobile-app/src/theme/index.ts",
+  "snapshotDate": "2026-10-23",
+  "colors": {
+    "primary": "#044B51",
+    "primaryPressed": "#033B40",
+    "primaryDeep": "#03373C",
+    "primarySoft": "#E3EFEB",
+    "primaryTint": "#F0F6F2",
+    "primaryOn": "#FFFFFF",
+    "accent": "#FF8506",
+    "accentSoft": "#FFF0DB",
+    "accentOn": "#173A3E",
+    "background": "#F8F7F3",
+    "surface": "#FFFFFF",
+    "text": "#173A3E",
+    "textSecondary": "#476466",
+    "muted": "#596F71",
+    "placeholder": "#647476",
+    "border": "#DCE5E1",
+    "borderStrong": "#B9CDCA",
+    "success": "#147252",
+    "warning": "#946000",
+    "danger": "#B7354B"
+  },
+  "typography": {
+    "family": "Nunito Sans",
+    "loadedWeights": [400, 600, 700, 800],
+    "minimumMigratedTextSize": 11,
+    "completeLocalizationVerified": false
+  },
+  "motion": {
+    "pressMs": 110,
+    "entranceMs": 220,
+    "sheetMs": 240,
+    "entranceDistance": 8,
+    "sheetDistance": 20,
+    "nativeDriver": true,
+    "respectsReducedMotion": true,
+    "backgroundReset": true,
+    "decorativeInfiniteLoops": false
+  },
+  "layout": {
+    "screenHorizontalPadding": 20,
+    "controlHeight": 54,
+    "typicalCardRadius": 22,
+    "bottomTabs": ["Home", "Earnings", "History", "Profile"],
+    "screenCount": 21,
+    "onboardingStageCount": 6
+  },
+  "assets": [
+    {"path": "mobile-app/assets/brand/ybm-mark.png", "width": 512, "height": 361, "bytes": 4716},
+    {"path": "mobile-app/assets/brand/ybm-app-icon.png", "width": 1024, "height": 1024, "bytes": 11210},
+    {"path": "mobile-app/assets/brand/ybm-adaptive-foreground.png", "width": 1024, "height": 1024, "bytes": 9857}
+  ],
+  "boundary": "Visual/demo implementation only; no production services or completed device audit."
+}

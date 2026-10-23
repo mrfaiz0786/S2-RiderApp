@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-primary-container": "#eeefff", "tertiary-container": "#007f36", "on-surface": "#1b1c1c", "primary": "#004ac6", "error-container": "#ffdad6", "on-tertiary-container": "#c7ffca", "surface-tint": "#0053db", "outline": "#737686", "secondary-fixed": "#e5e2e1", "on-secondary-container": "#636262", "surface-container-low": "#f5f3f3", "on-error-container": "#93000a", "background": "#fbf9f9", "on-surface-variant": "#434655", "primary-fixed-dim": "#b4c5ff", "primary-fixed": "#dbe1ff", "surface-container": "#efeded", "inverse-primary": "#b4c5ff", "inverse-surface": "#303031", "secondary-fixed-dim": "#c8c6c5", "on-background": "#1b1c1c", "on-tertiary-fixed-variant": "#005320", "on-primary-fixed-variant": "#003ea8", "on-tertiary": "#ffffff", "tertiary-fixed": "#7ffc97", "surface": "#fbf9f9", "surface-dim": "#dbdad9", "on-secondary-fixed-variant": "#474746", "surface-container-high": "#e9e8e7", "surface-variant": "#e4e2e2", "tertiary": "#006329", "surface-container-lowest": "#ffffff", "secondary-container": "#e2dfde", "inverse-on-surface": "#f2f0f0", "error": "#ba1a1a", "outline-variant": "#c3c6d7", "on-tertiary-fixed": "#002109", "on-primary": "#ffffff", "on-error": "#ffffff", "on-primary-fixed": "#00174b", "on-secondary-fixed": "#1c1b1b", "tertiary-fixed-dim": "#62df7d", "on-secondary": "#ffffff", "secondary": "#5f5e5e", "primary-container": "#2563eb", "surface-container-highest": "#e4e2e2", "surface-bright": "#fbf9f9" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "margin": "1rem", "space-xs": "0.25rem", "space-xl": "2rem", "space-md": "1rem", "space-lg": "1.5rem", "space-sm": "0.5rem", "gutter": "1rem" }, "fontFamily": { "body-lg": ["Inter"], "body-sm": ["Inter"], "headline-sm": ["Inter"], "label-sm": ["Inter"], "label-md": ["Inter"], "body-md": ["Inter"], "headline-lg": ["Inter"], "headline-md": ["Inter"], "label-lg": ["Inter"], "display-lg": ["Inter"], "currency-stat": ["Inter"] }, "fontSize": { "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }], "body-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }], "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }], "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.03em", "fontWeight": "500" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }], "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }], "headline-lg": ["24px", { "lineHeight": "30px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }], "display-lg": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "currency-stat": ["28px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }] } } } }</script><style>@layer base{html,body{width:100%;margin:0;padding:0;}body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface antialiased flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center justify-between px-margin h-6 text-on-surface-variant font-label-sm text-label-sm select-none"><span>09:41</span><div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-[14px]">signal_cellular_4_bar</span><span class="material-symbols-outlined text-[14px]">wifi</span><span class="material-symbols-outlined text-[14px]">battery_full</span></div></div><div class="h-14 px-margin flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-xs min-w-0"><button aria-label="Go back" class="min-w-[44px] min-h-[44px] flex items-center justify-center -ml-2 text-on-surface active:scale-95 transition-transform" onclick="history.back()"><span class="material-symbols-outlined text-[24px]">arrow_back</span></button><img alt="YBM Delivery Partner Logo" class="h-8 w-auto object-contain flex-shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1Wq4Xm7122DT0jXR5tSwun7kpS1p7qFi2w3zXQjhkkGGx40EXX5y5wX0hy5a9-ki9iCnys7ACVFgKdeJv14SGVf0w_1Rf3zno_vGN7olaIiMo1rguTE3wY6QUPgETMepT7pNulKZa0Um2ja3KXDZo2250UX5oxDxe9OYXQLiCJ6f99HgmuLq6s0pmQax8DIso9FgZNgHpbJfJbIR7HmSu5kf0AHu7EoMWeVBJm16sTWanoSqJZQPWi1XhU"/><h1 class="font-headline-sm text-headline-sm text-on-surface truncate leading-tight ml-1">Safety</h1></div><div class="flex items-center gap-space-sm flex-shrink-0"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 w-full bg-surface pt-20 pb-safe px-margin flex flex-col"><div class="flex flex-col w-full pb-8">
+<!-- Reassurance & Zero Penalty Protection Banner -->
+<div class="w-full bg-tertiary-container text-on-tertiary-container rounded-xl p-space-md shadow-sm mb-space-md flex items-start gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-on-tertiary-container/15 flex items-center justify-center flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px] text-on-tertiary-container" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-lg text-label-lg font-semibold tracking-tight">Zero-Penalty Safety Shield</span>
+<p class="font-body-sm text-body-sm opacity-90 mt-0.5 leading-snug">
+        Your safety is our top priority. Zero penalty or rating impact for trips abandoned due to safety threats or road emergencies.
+      </p>
+</div>
+</div>
+<!-- SOS Emergency Dispatch Hero Card -->
+<div class="w-full bg-surface-container-lowest rounded-xl p-space-md shadow-sm mb-space-lg flex flex-col items-center text-center relative overflow-hidden">
+<!-- Ambient Alert Aura -->
+<div class="absolute -top-12 left-1/2 -translate-x-1/2 w-48 h-48 bg-error/10 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-center gap-1.5 bg-error-container text-on-error-container px-3 py-1 rounded-full mb-space-md">
+<span class="w-2 h-2 rounded-full bg-error animate-pulse"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-semibold">Immediate Assistance</span>
+</div>
+<!-- Interactive Press & Hold SOS Button -->
+<div class="relative w-40 h-40 flex items-center justify-center select-none my-2">
+<!-- SVG Progress Ring -->
+<svg class="absolute inset-0 w-full h-full -rotate-90 pointer-events-none" viewbox="0 0 160 160">
+<circle class="stroke-error-container" cx="80" cy="80" fill="transparent" r="72" stroke-width="6"></circle>
+<circle class="stroke-error transition-all duration-75" cx="80" cy="80" fill="transparent" id="sos-progress-bar" r="72" stroke-dasharray="452.38" stroke-dashoffset="452.38" stroke-linecap="round" stroke-width="6"></circle>
+</svg>
+<!-- Physical Action Trigger -->
+<button aria-label="Press and hold for 3 seconds to trigger SOS" class="w-32 h-32 rounded-full bg-error text-on-error shadow-lg flex flex-col items-center justify-center active:scale-95 transition-transform cursor-pointer focus:outline-none" id="sos-button" type="button">
+<span class="material-symbols-outlined text-[36px] mb-0.5" style="font-variation-settings: 'FILL' 1;">fmd_bad</span>
+<span class="font-headline-sm text-headline-sm tracking-widest font-bold">SOS</span>
+<span class="font-label-sm text-label-sm opacity-90 tracking-tight" id="sos-timer-text">HOLD 3s</span>
+</button>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface mt-space-sm mb-space-xs font-semibold">
+      Press &amp; Hold for 3s to Trigger SOS
+    </h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-xs leading-relaxed">
+      Notifies <span class="text-on-surface font-semibold">YBM Fleet Emergency Dispatch</span> &amp; your designated contact (<span class="font-medium">Father: +91 91234 56789</span>). Local police (112) is alerted if emergency is confirmed.
+    </p>
+<!-- Triggered Alert Overlay State (Hidden initially) -->
+<div class="hidden w-full mt-space-md p-space-sm rounded-lg bg-error-container text-on-error-container flex items-center justify-between" id="sos-success-banner">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-error">emergency</span>
+<span class="font-label-md text-label-md font-semibold text-left">Alert Transmitted to Command Center</span>
+</div>
+<button class="text-error font-label-md text-label-md underline font-bold px-2 py-1" id="sos-cancel-btn" type="button">Cancel</button>
+</div>
+</div>
+<!-- Incident Reporting Section -->
+<div class="w-full bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col">
+<div class="flex items-center justify-between pb-space-sm mb-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">report_problem</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Road Incident Report</h3>
+</div>
+<span class="font-label-sm text-label-sm bg-surface-container-high text-on-surface-variant px-2.5 py-0.5 rounded-full font-medium">Non-Critical</span>
+</div>
+<!-- Active Job Context Tag -->
+<div class="flex items-center justify-between bg-surface-container-low p-space-sm rounded-lg mb-space-md">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-secondary text-[18px]">local_shipping</span>
+<span class="font-label-md text-label-md text-on-surface truncate">Attached to Order <span class="font-bold">#YBM-8924</span></span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant flex-shrink-0">Optional</span>
+</div>
+<!-- Incident Category Selection -->
+<label class="font-label-md text-label-md text-on-surface-variant mb-space-xs font-medium">Incident Category</label>
+<div class="grid grid-cols-2 gap-2 mb-space-md" id="category-selector">
+<button class="incident-chip flex items-center gap-2 p-2.5 rounded-lg bg-surface-container text-on-surface text-left transition-all active:scale-[0.98]" type="button">
+<span class="material-symbols-outlined text-[18px] text-error">car_crash</span>
+<span class="font-label-sm text-label-sm font-semibold truncate leading-tight">Road Accident</span>
+</button>
+<button class="incident-chip flex items-center gap-2 p-2.5 rounded-lg bg-surface-container text-on-surface text-left transition-all active:scale-[0.98]" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary">record_voice_over</span>
+<span class="font-label-sm text-label-sm font-semibold truncate leading-tight">Customer Harassment</span>
+</button>
+<button class="incident-chip flex items-center gap-2 p-2.5 rounded-lg bg-surface-container text-on-surface text-left transition-all active:scale-[0.98]" type="button">
+<span class="material-symbols-outlined text-[18px] text-secondary">build</span>
+<span class="font-label-sm text-label-sm font-semibold truncate leading-tight">Vehicle Breakdown</span>
+</button>
+<button class="incident-chip flex items-center gap-2 p-2.5 rounded-lg bg-surface-container text-on-surface text-left transition-all active:scale-[0.98]" type="button">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">thunderstorm</span>
+<span class="font-label-sm text-label-sm font-semibold truncate leading-tight">Severe Weather</span>
+</button>
+</div>
+<!-- Description Textarea -->
+<label class="font-label-md text-label-md text-on-surface-variant mb-space-xs font-medium" for="incident-description">Description</label>
+<div class="bg-surface-container-low rounded-lg p-space-sm mb-space-md focus-within:bg-surface-container">
+<textarea class="w-full bg-transparent text-on-surface font-body-md text-body-md placeholder:text-outline focus:outline-none resize-none" id="incident-description" placeholder="Briefly describe what happened..." rows="3"></textarea>
+</div>
+<!-- Evidence Photos Uploader -->
+<label class="font-label-md text-label-md text-on-surface-variant mb-space-xs font-medium">Visual Evidence</label>
+<div class="grid grid-cols-3 gap-2 mb-space-lg">
+<!-- Attached Proof Image 1 -->
+<div class="relative aspect-square rounded-lg overflow-hidden bg-surface-container shadow-xs">
+<img alt="Incident Photo 1" class="w-full h-full object-cover" data-alt="Close up photograph showing scooter bumper damage and minor scratches on the road after an incident in daylight, utilitarian documentary photo style with authentic lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDY1Ra3m9nrZSYvXGBXmsDWqBMwLJh8wdlPfMrCPXxbgGo46OS82K4W36jfAeuGU5txbXsrdiWvDsyMkGKXM1HY7TAKKMRYn2RNcGurjjqsIHk0CPCjzhaTd51yu9SRE_iv8SCx-vsBVAE3QFjzHfvoH1ofZl1DT04QLa0BJ7_ouRAK0iuPtEaVi4NmOtfTY3hflL3YM9ouiAkGON3PspvvVUIEV3h8jROPRePs9P44wPbuSZ7fstr"/>
+<div class="absolute bottom-1 right-1 bg-inverse-surface/75 text-inverse-on-surface rounded p-0.5">
+<span class="material-symbols-outlined text-[12px] block">check</span>
+</div>
+</div>
+<!-- Attached Proof Image 2 -->
+<div class="relative aspect-square rounded-lg overflow-hidden bg-surface-container shadow-xs">
+<img alt="Incident Photo 2" class="w-full h-full object-cover" data-alt="Wide shot of a rain flooded street with road obstruction barriers in Mumbai urban district under heavy overcast sky, realistic mobile report photo." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBy0drZcb2FJZ2aDOGos_8DARKYBsM9a4VMXxogZjdPbChzhEL4_LLRHeErZW4l6JGj_MSpNXZ1qoum5nGyJghuwOGU63wVNiTwFVsG7A6VCnsFZPuxd3JLP8ShEALGHZpi9KZH96CT7zn7vuqbJ3mB-AqwZBC6NMT36G7cYLXAAQCpWyAVnP1cg7afXSgDH0s11scqZ0CiMx-o56aOXflKJWbeaDSaPGuXJjB1QiYuyAG3mZ6fLP4e"/>
+<div class="absolute bottom-1 right-1 bg-inverse-surface/75 text-inverse-on-surface rounded p-0.5">
+<span class="material-symbols-outlined text-[12px] block">check</span>
+</div>
+</div>
+<!-- Add Photo Button -->
+<button aria-label="Add Evidence Photo" class="aspect-square rounded-lg bg-surface-container-low hover:bg-surface-container flex flex-col items-center justify-center text-on-surface-variant active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[24px] text-primary">add_a_photo</span>
+<span class="font-label-sm text-label-sm mt-1 font-medium">Add Photo</span>
+</button>
+</div>
+<!-- Live GPS Location stamp banner -->
+<div class="flex items-center gap-2 px-3 py-2 bg-surface-container-low rounded-lg mb-space-lg">
+<span class="material-symbols-outlined text-tertiary text-[18px]">my_location</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold truncate">Live GPS Tagged: 19.0760° N, 72.8777° E</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Bandra-Kurla Complex, Mumbai</span>
+</div>
+</div>
+<!-- Primary Action Button -->
+<button class="w-full h-12 rounded-xl bg-primary-container text-on-primary flex items-center justify-center font-label-lg text-label-lg active:scale-[0.98] transition-transform shadow-sm" id="submit-incident-btn" type="button">
+<span class="material-symbols-outlined mr-2 text-[20px]">send</span>
+      Submit Incident Report
+    </button>
+</div>
+<!-- Incident Submission Confirmation Modal State (Hidden) -->
+<div class="hidden fixed inset-0 z-50 bg-inverse-surface/40 flex items-center justify-center p-space-md" id="report-modal">
+<div class="bg-surface-container-lowest rounded-xl p-space-lg max-w-xs w-full shadow-xl flex flex-col items-center text-center">
+<div class="w-12 h-12 rounded-full bg-tertiary/15 text-tertiary flex items-center justify-center mb-space-sm">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold">Report Received</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 mb-space-md">
+        Ticket <span class="font-semibold text-on-surface">#INC-44129</span> logged. Support dispatch has been updated. Stay safe.
+      </p>
+<button class="w-full h-11 bg-surface-container-high text-on-surface rounded-lg font-label-lg text-label-lg" id="close-modal-btn" type="button">
+        Dismiss
+      </button>
+</div>
+</div>
+</div>
+<script>
+  (function initSafetyScreen() {
+    // SOS 3-Second Hold Logic
+    const sosBtn = document.getElementById('sos-button');
+    const progressBar = document.getElementById('sos-progress-bar');
+    const timerText = document.getElementById('sos-timer-text');
+    const successBanner = document.getElementById('sos-success-banner');
+    const cancelSosBtn = document.getElementById('sos-cancel-btn');
+
+    const totalCircumference = 452.38;
+    const requiredHoldDuration = 3000;
+    let holdStartTime = 0;
+    let holdInterval = null;
+
+    function resetSosState() {
+      if (holdInterval) {
+        clearInterval(holdInterval);
+        holdInterval = null;
+      }
+      progressBar.style.strokeDashoffset = totalCircumference;
+      timerText.textContent = 'HOLD 3s';
+    }
+
+    function startSosHold(e) {
+      if (e) e.preventDefault();
+      holdStartTime = Date.now();
+      resetSosState();
+
+      holdInterval = setInterval(() => {
+        const elapsed = Date.now() - holdStartTime;
+        const progress = Math.min(elapsed / requiredHoldDuration, 1);
+        const offset = totalCircumference - (totalCircumference * progress);
+        progressBar.style.strokeDashoffset = offset;
+
+        const remainingSeconds = Math.max(0, Math.ceil((requiredHoldDuration - elapsed) / 1000));
+        timerText.textContent = remainingSeconds > 0 ? remainingSeconds + 's' : 'ACTIVE';
+
+        if (progress >= 1) {
+          clearInterval(holdInterval);
+          holdInterval = null;
+          triggerSosSuccess();
+        }
+      }, 30);
+    }
+
+    function triggerSosSuccess() {
+      if (navigator.vibrate) {
+        navigator.vibrate([200, 100, 200, 100, 400]);
+      }
+      successBanner.classList.remove('hidden');
+      timerText.textContent = 'SENT';
+      sosBtn.classList.remove('bg-error');
+      sosBtn.classList.add('bg-on-surface');
+    }
+
+    cancelSosBtn.addEventListener('click', () => {
+      successBanner.classList.add('hidden');
+      sosBtn.classList.remove('bg-on-surface');
+      sosBtn.classList.add('bg-error');
+      resetSosState();
+    });
+
+    sosBtn.addEventListener('mousedown', startSosHold);
+    sosBtn.addEventListener('touchstart', startSosHold, { passive: false });
+    window.addEventListener('mouseup', resetSosState);
+    window.addEventListener('touchend', resetSosState);
+
+    // Incident Chip Single Selector
+    const chips = document.querySelectorAll('.incident-chip');
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chips.forEach(c => {
+          c.classList.remove('bg-primary-container', 'text-on-primary');
+          c.classList.add('bg-surface-container', 'text-on-surface');
+        });
+        chip.classList.remove('bg-surface-container', 'text-on-surface');
+        chip.classList.add('bg-primary-container', 'text-on-primary');
+      });
+    });
+
+    // Default select first chip
+    if (chips.length > 0) {
+      chips[0].classList.remove('bg-surface-container', 'text-on-surface');
+      chips[0].classList.add('bg-primary-container', 'text-on-primary');
+    }
+
+    // Modal Confirmation Interaction
+    const submitBtn = document.getElementById('submit-incident-btn');
+    const modal = document.getElementById('report-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const descInput = document.getElementById('incident-description');
+
+    submitBtn.addEventListener('click', () => {
+      modal.classList.remove('hidden');
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+      modal.classList.add('hidden');
+      if (descInput) descInput.value = '';
+    });
+  })();
+</script></main></body></html>

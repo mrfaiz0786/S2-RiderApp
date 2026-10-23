@@ -1,0 +1,24 @@
+{
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/node_modules.repair-backup": true,
+    "**/.expo*": true,
+    "**/.theme-backup*": true,
+    "**/.mcp-backups": true,
+    "archive": true,
+    "**/scripts/migrations": true,
+    "**/dist": true
+  },
+  "search.exclude": {
+    "**/node_modules*": true,
+    "**/.expo*": true,
+    "**/.theme-backup*": true,
+    "**/.mcp-backups": true,
+    "archive/**": true,
+    "design/reference/**": true,
+    "**/dist/**": true
+  },
+  "editor.tabSize": 2,
+  "files.eol": "\n",
+  "typescript.tsdk": "mobile-app/node_modules/typescript/lib"
+}
