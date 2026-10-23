@@ -1,0 +1,41 @@
+{
+  "name": "ybm-rider-app",
+  "version": "0.1.0",
+  "private": true,
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "typecheck": "tsc --noEmit",
+    "check:architecture": "node scripts/check-architecture.cjs",
+    "test": "node scripts/test.cjs",
+    "format": "prettier --write App.tsx src tests scripts package.json tsconfig.json app.json",
+    "format:check": "prettier --check App.tsx src tests scripts package.json tsconfig.json app.json",
+    "check": "npm run typecheck && npm run check:architecture && npm test && npm run format:check",
+    "export:android": "expo export --platform android --output-dir dist/android",
+    "refactor:imports": "node scripts/organize-imports.cjs",
+    "assets:brand": "node scripts/build-brand-assets.cjs"
+  },
+  "dependencies": {
+    "@expo-google-fonts/nunito-sans": "^0.4.2",
+    "@expo/vector-icons": "^15.0.2",
+    "expo": "~57.0.0",
+    "expo-font": "~57.0.4",
+    "expo-splash-screen": "~57.0.10",
+    "expo-status-bar": "~57.0.1",
+    "react": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-safe-area-context": "~5.7.0"
+  },
+  "devDependencies": {
+    "@types/react": "~19.2.0",
+    "caniuse-lite": "^1.0.30001817",
+    "prettier": "3.9.10",
+    "typescript": "~6.0.3"
+  },
+  "engines": {
+    "node": ">=24 <25"
+  }
+}

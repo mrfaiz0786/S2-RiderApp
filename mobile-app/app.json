@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "Build Your Mart Rider",
+    "slug": "ybm-rider",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "icon": "./assets/brand/ybm-app-icon.png",
+    "splash": {
+      "image": "./assets/brand/ybm-mark.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#F8F7F3"
+    },
+    "android": {
+      "package": "online.aadityakumar.ybmrider",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/brand/ybm-adaptive-foreground.png",
+        "backgroundColor": "#F8F7F3"
+      }
+    },
+    "plugins": [
+      "expo-status-bar",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/brand/ybm-mark.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#F8F7F3"
+        }
+      ],
+      "expo-font"
+    ]
+  }
+}

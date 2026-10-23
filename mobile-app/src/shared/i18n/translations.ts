@@ -1,0 +1,43 @@
+// Existing prototype translations; full localization is a separate work item.
+export type Language = "English" | "Hindi" | "Kannada";
+export const translations = {
+  English: {
+    welcome: "WELCOME TO BUILD YOUR MART",
+    riderPartner: "RIDER PARTNER",
+    hero: "Deliver with confidence.",
+    intro: "Manage deliveries, track earnings and keep every order organised in one place.",
+    signIn: "Partner sign in",
+    mobile: "Mobile number",
+    continue: "Continue →",
+    preferred: "Preferred language",
+    profile: "Your rider profile",
+    profileIntro: "Add your details to set up your partner account.",
+    save: "Save and continue →",
+  },
+  Hindi: {
+    welcome: "बिल्ड योर मार्ट में आपका स्वागत है",
+    riderPartner: "राइडर पार्टनर",
+    hero: "आत्मविश्वास के साथ डिलीवरी करें।",
+    intro: "डिलीवरी प्रबंधित करें, कमाई ट्रैक करें और सभी ऑर्डर व्यवस्थित रखें।",
+    signIn: "पार्टनर साइन इन",
+    mobile: "मोबाइल नंबर",
+    continue: "जारी रखें →",
+    preferred: "पसंदीदा भाषा",
+    profile: "आपकी राइडर प्रोफ़ाइल",
+    profileIntro: "अपना पार्टनर खाता सेट करने के लिए विवरण भरें।",
+    save: "सेव करके आगे बढ़ें →",
+  },
+  Kannada: {
+    welcome: "ಬಿಲ್ಡ್ ಯುವರ್ ಮಾರ್ಟ್‌ಗೆ ಸ್ವಾಗತ",
+    riderPartner: "ರೈಡರ್ ಪಾಲುದಾರ",
+    hero: "ಆತ್ಮವಿಶ್ವಾಸದಿಂದ ವಿತರಿಸಿ.",
+    intro: "ವಿತರಣೆಗಳನ್ನು ನಿರ್ವಹಿಸಿ, ಗಳಿಕೆಯನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡಿ ಮತ್ತು ಆರ್ಡರ್‌ಗಳನ್ನು ವ್ಯವಸ್ಥಿತವಾಗಿಡಿ.",
+    signIn: "ಪಾಲುದಾರರ ಸೈನ್ ಇನ್",
+    mobile: "ಮೊಬೈಲ್ ಸಂಖ್ಯೆ",
+    continue: "ಮುಂದುವರಿಸಿ →",
+    preferred: "ಆದ್ಯತೆಯ ಭಾಷೆ",
+    profile: "ನಿಮ್ಮ ರೈಡರ್ ಪ್ರೊಫೈಲ್",
+    profileIntro: "ನಿಮ್ಮ ಪಾಲುದಾರ ಖಾತೆಗಾಗಿ ವಿವರಗಳನ್ನು ಸೇರಿಸಿ.",
+    save: "ಉಳಿಸಿ ಮುಂದುವರಿಸಿ →",
+  },
+} as const;

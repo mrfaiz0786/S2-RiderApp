@@ -1,0 +1,9 @@
+node_modules
+node_modules.repair-backup
+.expo*
+.theme-backup*
+dist
+coverage
+scripts/migrations
+package-lock.json
+assets
