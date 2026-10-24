@@ -7,6 +7,7 @@ import { ScreenHero } from "@/shared/ui/ScreenHero";
 import { journeyStyles as s } from "@/shared/theme/journeyStyles";
 import { theme } from "@/shared/theme";
 import { createLegacyRiderApi } from "@/services/legacy/client";
+import { explainLegacyError } from "@/services/legacy/errors";
 import {
   formatInr,
   type LoginResponse,
@@ -15,17 +16,23 @@ import {
 } from "@/services/legacy/contracts";
 import { fromLogin, legacySessionStore, type LegacySession } from "@/services/legacy/session";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { AppState, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { AppState, Platform, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LiveAssignmentPanel } from "./components/LiveAssignmentPanel";
 import { LiveLogin } from "./components/LiveLogin";
 
-type Page = "work" | "history" | "profile" | "details" | "registration";
+type Page = "work" | "history" | "profile" | "details";
 function statusName(status: string) {
   return status.replace(/_/g, " ");
 }
 
-export function LiveRiderApp() {
+export function LiveRiderApp({
+  onBack,
+  onRegister,
+}: {
+  onBack: () => void;
+  onRegister: () => void;
+}) {
   const [page, setPage] = useState<Page>("work");
   const [session, setSession] = useState<LegacySession | null>(null);
   const sessionRef = useRef<LegacySession | null>(null);
@@ -121,7 +128,7 @@ export function LiveRiderApp() {
         setOrders(result.data);
         setWorkError("");
       } else if (result.error.code !== "CANCELLED" && result.error.code !== "UNAUTHENTICATED")
-        setWorkError(result.error.message);
+        setWorkError(explainLegacyError(result.error, Platform.OS === "web"));
     }
     async function fetchHistory() {
       const result = await api!.history(controller.signal);
@@ -130,7 +137,7 @@ export function LiveRiderApp() {
         setHistory(result.data);
         setHistoryError("");
       } else if (result.error.code !== "CANCELLED" && result.error.code !== "UNAUTHENTICATED")
-        setHistoryError(result.error.message);
+        setHistoryError(explainLegacyError(result.error, Platform.OS === "web"));
     }
     async function fetchProfile() {
       const result = await api!.profile(controller.signal);
@@ -139,7 +146,7 @@ export function LiveRiderApp() {
         setProfile(result.data);
         setProfileError("");
       } else if (result.error.code !== "CANCELLED" && result.error.code !== "UNAUTHENTICATED")
-        setProfileError(result.error.message);
+        setProfileError(explainLegacyError(result.error, Platform.OS === "web"));
     }
     setLoading(true);
     void Promise.all([fetchOrders(), fetchHistory(), fetchProfile()]).finally(() => {
@@ -175,6 +182,7 @@ export function LiveRiderApp() {
       setSession(null);
       setPage("work");
       setStorageError("");
+      onBack();
     } catch {
       setStorageError("Could not clear secure storage. Please try signing out again.");
     }
@@ -214,36 +222,8 @@ export function LiveRiderApp() {
                 </Text>
               </Card>
             ) : null}
-            {page === "registration" ? (
-              <>
-                <ScreenHero
-                  eyebrow="BECOME A RIDER"
-                  title="Join Build Your Mart"
-                  subtitle="Public registration is planned. No real application or KYC is submitted from this build."
-                  icon="account-plus-outline"
-                />
-                <Card>
-                  <Text style={s.heading}>How registration will work</Text>
-                  <Text style={s.body}>1. Verify your mobile number.</Text>
-                  <Text style={s.body}>
-                    2. Complete profile, work area and vehicle information.
-                  </Text>
-                  <Text style={s.body}>3. Submit required documents securely.</Text>
-                  <Text style={s.body}>4. Track review and corrections.</Text>
-                  <Text style={s.body}>5. After server approval, get access to assignments.</Text>
-                  <Text style={s.small}>
-                    Registration, upload and approval APIs are not in the existing rider-api.txt
-                    contract. This page does not claim to create an account.
-                  </Text>
-                </Card>
-                <BrandButton
-                  title="Back to existing rider sign-in"
-                  onPress={() => setPage("work")}
-                />
-              </>
-            ) : (
-              <LiveLogin api={api} onLogin={login} onRegister={() => setPage("registration")} />
-            )}
+            <BrandButton title="Back to rider landing" secondary onPress={onBack} />
+            <LiveLogin api={api} onLogin={login} onRegister={onRegister} />
           </>
         ) : (
           <>

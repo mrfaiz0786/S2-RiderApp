@@ -29,6 +29,23 @@ export function decodeLegacySession(value: unknown, now = Date.now()): LegacySes
 export function fromLogin(login: LoginResponse, now = Date.now()): LegacySession {
   return { token: login.token, username: login.username, expiresAt: now + MAX_AGE_MS };
 }
+/**
+ * Browser-only staging session storage. Never writes JWTs into localStorage,
+ * sessionStorage, IndexedDB, cookies, filesystem or logs. A refresh signs out.
+ * React Native uses Expo SecureStore instead.
+ */
+export function createEphemeralSessionStorage(): LegacySecureStorage {
+  const memory = new Map<string, string>();
+  return {
+    getItem: async (key) => memory.get(key) ?? null,
+    setItem: async (key, value) => {
+      memory.set(key, value);
+    },
+    removeItem: async (key) => {
+      memory.delete(key);
+    },
+  };
+}
 export function createLegacySessionStore(store: LegacySecureStorage) {
   let queue: Promise<unknown> = Promise.resolve();
   let generation = 0;

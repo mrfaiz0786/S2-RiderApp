@@ -2,6 +2,7 @@ import { appConfig } from "@/config/app";
 import { useAuth } from "@/features/auth/model";
 import { useOnboarding } from "@/features/onboarding/model";
 import { useSessionLifecycle } from "@/shared/state/SessionResetProvider";
+import { useDemoJourneyEnabled } from "@/shared/state/DemoJourneyMode";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   createContext,
@@ -102,11 +103,9 @@ export function useDelivery() {
   const { state, dispatch } = store;
   const { testSignedIn } = useAuth();
   const { sampleReview, workCity } = useOnboarding();
+  const sandboxEnabled = useDemoJourneyEnabled();
   const canTest =
-    appConfig.dataMode === "mock" &&
-    testSignedIn &&
-    sampleReview === "test_approved" &&
-    store.hydrated;
+    sandboxEnabled && testSignedIn && sampleReview === "test_approved" && store.hydrated;
   return {
     ...state,
     ...deliveryFlags(state),

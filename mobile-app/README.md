@@ -4,7 +4,7 @@
 
 React Native / Expo / TypeScript mobile app only. The backend team owns databases, real authentication/OTP, dispatch, KYC, private uploads, notification sending, payouts and operations. Android package: `online.aadityakumar.ybmrider`.
 
-The branded app now has **22 route screens**, including a dedicated test COD payment screen. The complete test-rider simulation is available in mock mode; API mode remains gated until real contracts and screen adapters are integrated.
+The branded simulator has **22 route screens**, including a dedicated test COD payment screen. Mock mode remains fully separate; API mode has a read-only existing-rider client but delivery mutations and public onboarding remain gated pending backend approval.
 
 ## Run the test rider journey
 
@@ -43,11 +43,11 @@ EXPO_PUBLIC_PUSH_ENABLED=false
 
 These public values are bundled into the app. Never put provider admin keys, SMTP passwords, service accounts or static bearer tokens here. The backend team supplies a staging HTTPS server **origin** (e.g. `https://staging.example.test`) for connected mode; do not append `/v1`, `/api/auth` or `/api/rider-app`. No API URL is needed to run the simulator.
 
-API mode now has a separate **existing-rider read-only client** driven by the backend's documented `/api/auth` and `/api/rider-app` endpoints: password/OTP sign-in, validated JWT role, SecureStore session, assigned orders, history, profile and route summary/external navigation. It requires the backend HTTPS **server origin** (no `/api` suffix) and authorized staging credentials. Real delivery mutations are deliberately disabled because the supplied backend guide reports missing assignment ownership authorization. Public signup is only a pending-API information screen. See `../docs/hybrid-phase1.md`. Production remains blocked by `src/config/integration-status.json`.
+Connected API mode now opens a **new rider landing page**. **Login as a Rider** uses the existing backend's documented `/api/auth` and `/api/rider-app` endpoints: password/OTP sign-in, native SecureStore session (memory-only on staging web), assigned real orders, server history, profile and route summaries/external navigation. **Register yourself as a Rider** starts the original profile → sample document/vehicle → city/hub → simulated approval → fictional order/OTP/COD journey directly without a second demo login. In this connected-mode registration preview, **nothing is uploaded or persisted**: leaving or refreshing discards all sample registration and delivery data. The preview never authenticates to live APIs; production blocks it until real registration APIs are approved. Real delivery mutations are also disabled because the backend guide reports missing assignment ownership authorization. See `../docs/hybrid-landing.md` and `../docs/hybrid-phase1.md`. Production remains blocked by `src/config/integration-status.json`.
 
 ## State, maps and notifications
 
-Fictional deliveries, route progress, timelines and the latest 100 completed receipts are stored locally with AsyncStorage. Login, profile input, OTP input and sample-document checks remain memory-only. Reopen the app, log in and perform sample verification again to resume saved delivery history. Profile > Reset demo progress clears saved test orders and totals too.
+In standalone **mock mode only**, fictional deliveries, route progress, timelines and the latest 100 completed receipts are stored locally with AsyncStorage. The **connected-mode registration preview** instead uses memory-only sample state and never writes demo progress. Login, profile input, OTP input and sample-document checks remain memory-only. Reopen the app, log in and perform sample verification again to resume saved delivery history. Profile > Reset demo progress clears saved test orders and totals too.
 
 The map displays real OpenStreetMap street tiles with attribution and an interpolated test rider on scripted coordinates. It is not GPS, turn-by-turn directions or a routing API. Street tiles need internet. The route overlay and progression controls still work when tiles fail. Playback pauses on screen exit/backgrounding; reduced-motion users can step or jump.
 
@@ -70,7 +70,7 @@ src/
   shared/      # branded UI/theme, helpers and reset infrastructure
 ```
 
-The existing-backend client now has typed read DTOs and token-only native session restoration. Real delivery mutations, public signup, backend session revocation, private uploads, location streaming, native Google map, remote notifications and device acceptance remain outstanding. The simulator guards and persisted mock receipts are not real authorization or a financial ledger.
+The existing-backend client now has typed read DTOs, token-only native session restoration and ephemeral staging browser sessions (page refresh requires a new login). The test backend rejects Expo localhost browser CORS preflights until the backend allowlists the development origin; Android/iOS requests are not subject to browser CORS. See `../docs/hybrid-phase1.md` for the evidence and backend handoff. Real delivery mutations, public signup, backend session revocation, private uploads, location streaming, native Google map, remote notifications and device acceptance remain outstanding. The simulator guards and persisted mock receipts are not real authorization or a financial ledger.
 
 ## Commands
 
@@ -81,6 +81,7 @@ The existing-backend client now has typed read DTOs and token-only native sessio
 | `npm run doctor` | Expo project diagnostics |
 | `npm run export:android` | Android JavaScript/Hermes export, not an APK |
 | `npm run export:web` | Browser test build |
+| `node tests/smoke/live-web.cjs` | After exporting **API-mode** web, exercise connected login and reads with entirely fictional intercepted responses; no real backend calls |
 | `npx playwright install chromium` | Install browser used by rendered-journey tests |
 | `npm run test:e2e` | Click through COD/prepaid, errors, persistence and reset; requires the web export |
 | `npm run api:docs` | Regenerate draft endpoint handoff |

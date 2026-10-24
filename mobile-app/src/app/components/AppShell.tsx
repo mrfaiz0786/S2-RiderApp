@@ -6,13 +6,21 @@ import { createBrandedStyles } from "@/shared/theme/createBrandedStyles";
 import { BrandEntrance } from "@/shared/ui/BrandMotion";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import { useEffect, useRef, useState } from "react";
-import { BackHandler, KeyboardAvoidingView, Platform, ScrollView, Text } from "react-native";
+import {
+  BackHandler,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AppHeader } from "./AppHeader";
 import { BottomTabs } from "./BottomTabs";
 import { DemoScreenPicker } from "./DemoScreenPicker";
 import { TestOrderAlerts } from "./TestOrderAlerts";
-export function AppShell() {
+export function AppShell({ onExit }: { onExit?: () => void } = {}) {
   const { route, goBack } = useNavigation();
   const [previewOpen, setPreviewOpen] = useState(false);
   const scrollRef = useRef<ScrollView>(null);
@@ -34,7 +42,21 @@ export function AppShell() {
   return (
     <SafeAreaView style={styles.safe} edges={["top", "bottom"]}>
       <ExpoStatusBar style="dark" />
-      <Text style={styles.testLabel}>TEST RIDER · NO REAL ORDERS OR PAYMENTS</Text>
+      {onExit ? (
+        <View style={styles.demoBanner}>
+          <Text style={styles.demoBannerText}>REGISTRATION SIMULATION · NOTHING IS SAVED</Text>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="Exit registration demo"
+            onPress={onExit}
+            style={styles.exitDemo}
+          >
+            <Text style={styles.exitDemoText}>Exit demo</Text>
+          </Pressable>
+        </View>
+      ) : (
+        <Text style={styles.testLabel}>TEST RIDER · NO REAL ORDERS OR PAYMENTS</Text>
+      )}
       <KeyboardAvoidingView
         style={styles.flex}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -60,6 +82,31 @@ export function AppShell() {
 const styles = createBrandedStyles({
   safe: { flex: 1, backgroundColor: theme.colors.background },
   flex: { flex: 1 },
+  demoBanner: {
+    backgroundColor: theme.colors.warningSoft,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 12,
+    gap: 8,
+    minHeight: 43,
+  },
+  demoBannerText: {
+    flex: 1,
+    fontWeight: "800",
+    color: theme.colors.warning,
+    fontSize: 9,
+    letterSpacing: 0.3,
+  },
+  exitDemo: {
+    paddingHorizontal: 11,
+    paddingVertical: 9,
+    borderRadius: 12,
+    backgroundColor: theme.colors.surface,
+    borderColor: theme.colors.border,
+    borderWidth: 1,
+  },
+  exitDemoText: { fontWeight: "800", fontSize: 12, color: theme.colors.primary },
   testLabel: {
     backgroundColor: theme.colors.accentSoft,
     color: theme.colors.primary,

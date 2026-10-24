@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Linking, Text, View } from "react-native";
+import { Linking, Platform, Text, View } from "react-native";
 import { BrandButton } from "@/shared/ui/BrandButton";
 import { Card } from "@/shared/ui/Card";
 import { Row } from "@/shared/ui/Row";
@@ -12,6 +12,7 @@ import {
   type RouteSummary,
 } from "@/services/legacy/contracts";
 import type { LegacyRiderApi } from "@/services/legacy/client";
+import { explainLegacyError } from "@/services/legacy/errors";
 
 export function LiveAssignmentPanel({
   assignmentId,
@@ -39,7 +40,7 @@ export function LiveAssignmentPanel({
       const detail = await api.detail(assignmentId, controller.signal);
       if (!alive) return;
       if (!detail.ok) {
-        setError(detail.error.message);
+        setError(explainLegacyError(detail.error, Platform.OS === "web"));
         setLoading(false);
         return;
       }

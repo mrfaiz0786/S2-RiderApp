@@ -48,7 +48,15 @@ npm run doctor
 npm run export:android
 ```
 
-Live authentication uses native SecureStore, so it needs a physical device or suitable native emulator. Web is for the existing mock browser tests, not storing real sessions.
+Native Android/iOS authentication uses Expo SecureStore. Staging web authentication now uses **memory-only** browser sessions: no token is written into localStorage, sessionStorage or cookies, and refreshing the page signs out. Web access still depends on the backend's CORS allowlist.
+
+## Confirmed browser login blocker (24 October 2026)
+
+The old rider web app runs at `https://test-admin.yourbuildmart.com` and can call `https://test.yourbuildmart.com`. The new Expo web app runs at `http://localhost:8081`. Direct credential-free OPTIONS preflight checks returned HTTP 200 with allowed origin for the old admin website, but HTTP 403 without CORS allow-origin for localhost on both `/api/auth/login` and `/api/rider-app/orders/history`. **This is a backend-origin policy issue, not invalid credentials.**
+
+Ask the backend team to allow the *approved staging development origin* `http://localhost:8081` for `OPTIONS`, `GET`, `POST` and required authenticated request headers (`Authorization`, `Content-Type`) with an explicit origin allowlist. Do not use the wildcard `*` with `Access-Control-Allow-Credentials: true`; do not disable CORS globally or embed permanent credentials in the mobile bundle. Android/iOS fetches do not use browser CORS.
+
+Until this change is deployed, use a native development build to test the existing rider APIs. After CORS is fixed, confirm the **actual redacted** `/api/auth/login` JSON response matches the documented raw `{ token, username, name, role }` object: old-app successful HTTP statuses and the JWT's `roles` claim do not establish the exact login response shape. Never share raw JWTs or passwords in bug reports.
 
 ## Acceptance still pending
 

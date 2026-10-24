@@ -2,6 +2,8 @@
 
 ## Current mobile implementation
 
+- `hybrid-landing.md`: new login/register landing, existing-backend login, memory-only registration simulation and test-order walkthrough.
+
 - `hybrid-phase1.md`: connected existing-rider client, live/mock isolation, API coverage and server authorization blockers.
 
 - `test-rider-journey.md`: test credentials, sample verification, map/OTP/COD flow, persistence, reset and testing.

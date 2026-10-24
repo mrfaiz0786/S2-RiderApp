@@ -11,10 +11,10 @@ const {
   hasLocation,
 } = loadSource("services/legacy/contracts.ts");
 const { createLegacyRiderApi } = loadSource("services/legacy/client.ts");
-const { createLegacySessionStore, decodeLegacySession, fromLogin } = loadSource(
-  "services/legacy/sessionModel.ts",
-);
+const { createLegacySessionStore, createEphemeralSessionStorage, decodeLegacySession, fromLogin } =
+  loadSource("services/legacy/sessionModel.ts");
 const { createApiClient } = loadSource("services/api/client.ts");
+const { explainLegacyError } = loadSource("services/legacy/errors.ts");
 const login = {
   token: "jwt.test.token",
   username: "9800000000",
@@ -230,6 +230,27 @@ test("legacy native session store rejects stale sessions and clears on logout", 
   );
   assert.equal(data, null);
 });
+test("rider errors explain browser CORS without exposing backend secrets", () => {
+  const network = { code: "NETWORK", message: "Could not reach service" };
+  const invalid = { code: "INVALID_RESPONSE", message: "Unexpected response" };
+  assert.match(explainLegacyError(network, true), /CORS preflight/);
+  assert.equal(explainLegacyError(network, false), network.message);
+  assert.match(explainLegacyError(invalid, true), /response field names/);
+  assert.doesNotMatch(explainLegacyError(invalid, true), /Bearer/);
+});
+
+test("browser staging sessions stay memory-only and disappear on new page-load storage", async () => {
+  const webStorage = createEphemeralSessionStorage();
+  const store = createLegacySessionStore(webStorage);
+  const session = fromLogin(decodeLogin(login));
+  assert.equal(await store.save(session), true);
+  assert.equal((await store.read()).token, login.token);
+  await store.clear();
+  assert.equal(await store.read(), null);
+  const freshTabStorage = createEphemeralSessionStorage();
+  assert.equal(await createLegacySessionStore(freshTabStorage).read(), null);
+});
+
 test("backend status mutation endpoints remain absent from the unsafe initial live adapter", () => {
   const api = configured(async () => envelope([]));
   for (const name of ["picked", "delivered", "failed", "toggleAvailability", "acceptOffer"]) {

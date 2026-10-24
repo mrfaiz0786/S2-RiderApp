@@ -8,5 +8,6 @@ export function useAuth() {
     ...state,
     setPhone: (value: string) => dispatch({ type: "phoneChanged", value }),
     verifyTestOtp: (code: string) => dispatch({ type: "verifyTestOtp", code }),
+    beginSampleRegistration: () => dispatch({ type: "beginSampleRegistration" }),
   };
 }

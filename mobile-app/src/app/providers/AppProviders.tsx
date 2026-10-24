@@ -35,6 +35,14 @@ function SessionScope({ children }: { children: ReactNode }) {
   const { epoch } = useSessionLifecycle();
   return <FeatureProviders key={epoch}>{children}</FeatureProviders>;
 }
+/** Fresh demo state is scoped to the registration walkthrough, never the real rider session. */
+export function DemoFeatureScope({ children }: { children: ReactNode }) {
+  return (
+    <SessionResetProvider>
+      <SessionScope>{children}</SessionScope>
+    </SessionResetProvider>
+  );
+}
 export function AppProviders({ children }: { children: ReactNode }) {
   return (
     <AppErrorBoundary>
@@ -43,9 +51,7 @@ export function AppProviders({ children }: { children: ReactNode }) {
           {appConfig.dataMode === "api" ? (
             children
           ) : (
-            <SessionResetProvider>
-              <SessionScope>{children}</SessionScope>
-            </SessionResetProvider>
+            <DemoFeatureScope>{children}</DemoFeatureScope>
           )}
         </BrandMotionProvider>
       </SafeAreaProvider>

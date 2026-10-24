@@ -50,6 +50,26 @@ test("only the shown test phone and login OTP establish a test session", () => {
     false,
   );
 });
+test("explicit sample registration opens only in-memory test onboarding", () => {
+  const started = authReducer(initialAuthState, { type: "beginSampleRegistration" });
+  assert.equal(started.testSignedIn, true);
+  assert.equal(started.phone, "");
+  const guarded = resolveTestRoute("home", {
+    signedIn: started.testSignedIn,
+    approved: false,
+    status: "idle",
+  });
+  assert.equal(guarded, "verification-status");
+  assert.equal(
+    resolveTestRoute("rider-profile", {
+      signedIn: started.testSignedIn,
+      approved: false,
+      status: "idle",
+    }),
+    "rider-profile",
+  );
+});
+
 test("arbitrary ten-digit phone does not pass the test login", () => {
   const state = authReducer(initialAuthState, { type: "phoneChanged", value: "8888888888" });
   assert.equal(authReducer(state, { type: "verifyTestOtp", code: "123456" }).testSignedIn, false);

@@ -1,6 +1,10 @@
 import * as SecureStore from "expo-secure-store";
 import { Platform } from "react-native";
-import { createLegacySessionStore, type LegacySecureStorage } from "./sessionModel";
+import {
+  createEphemeralSessionStorage,
+  createLegacySessionStore,
+  type LegacySecureStorage,
+} from "./sessionModel";
 export { decodeLegacySession, fromLogin } from "./sessionModel";
 export type { LegacySession } from "./sessionModel";
 const native: LegacySecureStorage = {
@@ -26,4 +30,7 @@ async function ensureNative() {
     );
   }
 }
-export const legacySessionStore = createLegacySessionStore(native);
+// Staging web: memory only, automatically lost when the tab reloads.
+export const legacySessionStore = createLegacySessionStore(
+  Platform.OS === "web" ? createEphemeralSessionStorage() : native,
+);
