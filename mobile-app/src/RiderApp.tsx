@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { RiderLanding } from "./features/auth/components/RiderLanding";
 import {
   ActivityIndicator,
   Image,
@@ -496,16 +497,21 @@ export default function RiderApp() {
   return (
     <SafeAreaView style={styles.safe}>
       <StatusBar backgroundColor={palette.bg} barStyle="dark-content" />
-      <ScrollView contentContainerStyle={styles.root} keyboardShouldPersistTaps="handled">
-        <View style={styles.top}>
-          <View style={styles.logo}>
-            <Text style={{ fontWeight: "900", fontSize: 22, color: palette.white }}>Y</Text>
+      <ScrollView
+        contentContainerStyle={[styles.root, page === "welcome" && styles.landingRoot]}
+        keyboardShouldPersistTaps="handled"
+      >
+        {page !== "welcome" && (
+          <View style={styles.top}>
+            <View style={styles.logo}>
+              <Text style={{ fontWeight: "900", fontSize: 22, color: palette.white }}>Y</Text>
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.eyebrow}>YOURBUILDMART • RIDER</Text>
+              <Text style={styles.title}>{head}</Text>
+            </View>
           </View>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.eyebrow}>YOURBUILDMART • RIDER</Text>
-            <Text style={styles.title}>{head}</Text>
-          </View>
-        </View>
+        )}
         {page !== "welcome" && (
           <TouchableOpacity
             onPress={() => {
@@ -526,33 +532,16 @@ export default function RiderApp() {
           </View>
         )}
         {page === "welcome" && (
-          <>
-            <View style={styles.hero}>
-              <Text style={styles.heroTitle}>Deliver. Earn. Easy.</Text>
-              <Text style={styles.heroBody}>
-                Everything you need for deliveries on one simple screen.
-              </Text>
-              <Text style={styles.heroBody}>📍 Delhi and Delhi NCR only</Text>
-            </View>
-            <BigButton
-              title="I already have an account  →"
-              onPress={() => {
-                setMode("login");
-                setPage("login");
-              }}
-            />
-            <BigButton
-              title="Register as a new rider  →"
-              secondary
-              onPress={() => {
-                setMode("register");
-                setPage("register");
-              }}
-            />
-            <Text style={styles.help}>
-              New test app. No old API. No Google Maps. Test orders are not customer purchases.
-            </Text>
-          </>
+          <RiderLanding
+            onLogin={() => {
+              setMode("login");
+              setPage("login");
+            }}
+            onRegister={() => {
+              setMode("register");
+              setPage("register");
+            }}
+          />
         )}
         {(page === "login" || page === "register") && (
           <>
@@ -779,6 +768,7 @@ export default function RiderApp() {
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: palette.bg },
   root: { padding: 18, paddingBottom: 50, maxWidth: 650, alignSelf: "center", width: "100%" },
+  landingRoot: { maxWidth: 1100, paddingHorizontal: 20, paddingTop: 16 },
   top: { flexDirection: "row", alignItems: "center", gap: 12, marginTop: 10, marginBottom: 20 },
   logo: {
     width: 51,
