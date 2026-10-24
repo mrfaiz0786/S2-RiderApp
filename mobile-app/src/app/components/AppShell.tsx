@@ -6,25 +6,31 @@ import { theme } from "@/shared/theme";
 import { createBrandedStyles } from "@/shared/theme/createBrandedStyles";
 import { BrandEntrance } from "@/shared/ui/BrandMotion";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BackHandler, KeyboardAvoidingView, Platform, ScrollView, StatusBar } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AppHeader } from "./AppHeader";
 import { BottomTabs } from "./BottomTabs";
+import { DemoScreenPicker } from "./DemoScreenPicker";
 export function AppShell() {
   const { route, goBack } = useNavigation();
+  const [previewOpen, setPreviewOpen] = useState(false);
   const scrollRef = useRef<ScrollView>(null);
   useEffect(() => {
     scrollRef.current?.scrollTo({ y: 0, animated: false });
   }, [route]);
   useEffect(() => {
     const subscription = BackHandler.addEventListener("hardwareBackPress", () => {
+      if (previewOpen) {
+        setPreviewOpen(false);
+        return true;
+      }
       if (route === "welcome" || route === "home") return false;
       goBack();
       return true;
     });
     return () => subscription.remove();
-  }, [route, goBack]);
+  }, [route, previewOpen, goBack]);
   return (
     <SafeAreaView style={styles.safe} edges={["top", "bottom"]}>
       <ExpoStatusBar style="dark" />
@@ -33,7 +39,7 @@ export function AppShell() {
         style={styles.flex}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
-        <AppHeader />
+        <AppHeader onOpenPreview={() => setPreviewOpen(true)} />
         <ScrollView
           ref={scrollRef}
           contentContainerStyle={styles.content}
@@ -47,6 +53,7 @@ export function AppShell() {
         <DeliveryActionDock />
         <BottomTabs />
       </KeyboardAvoidingView>
+      <DemoScreenPicker visible={previewOpen} onClose={() => setPreviewOpen(false)} />
     </SafeAreaView>
   );
 }

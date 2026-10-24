@@ -1,11 +1,15 @@
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import RiderApp from "../RiderApp";
-
-/** Keep the native/web safe-area context above every screen that consumes it. */
+import { BrandLoadingScreen } from "@/shared/ui/BrandLoadingScreen";
+import { AppShell } from "./components/AppShell";
+import { useAppReady } from "./hooks/useAppReady";
+import { AppProviders } from "./providers/AppProviders";
+function AppBootstrap() {
+  const ready = useAppReady();
+  return ready ? <AppShell /> : <BrandLoadingScreen />;
+}
 export default function App() {
   return (
-    <SafeAreaProvider>
-      <RiderApp />
-    </SafeAreaProvider>
+    <AppProviders>
+      <AppBootstrap />
+    </AppProviders>
   );
 }

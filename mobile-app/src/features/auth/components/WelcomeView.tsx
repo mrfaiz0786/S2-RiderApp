@@ -70,9 +70,7 @@ export function WelcomeView({
       <View style={styles.formCard}>
         <Text style={styles.sectionTitle}>Start with your number</Text>
         <Text style={styles.body}>We will guide you through your rider setup.</Text>
-        <Text style={styles.label}>
-          Mobile number <Text style={{ color: C.danger }}>*</Text>
-        </Text>
+        <Text style={styles.label}>Mobile number</Text>
         <View style={[styles.phoneInput, error ? styles.inputError : null]}>
           <Text style={styles.countryCode}>+91</Text>
           <View style={styles.phoneDivider} />
@@ -169,7 +167,7 @@ const styles = createBrandedStyles({
     justifyContent: "space-between",
     gap: 10,
     marginTop: 3,
-    marginBottom: 12,
+    marginBottom: 24,
   },
   brandWordmark: { flexDirection: "row", alignItems: "center", gap: 10, flex: 1 },
   brandName: { fontSize: 20, fontWeight: "800", color: C.primary, letterSpacing: -0.5 },
@@ -196,22 +194,22 @@ const styles = createBrandedStyles({
   },
   welcomeTitle: {
     color: C.text,
-    fontSize: 29,
+    fontSize: 34,
     fontWeight: "800",
-    lineHeight: 34,
+    lineHeight: 40,
     letterSpacing: -1.1,
   },
   welcomeSubtitle: {
     color: C.textSecondary,
     fontSize: 15,
     lineHeight: 22,
-    marginTop: 6,
+    marginTop: 11,
     maxWidth: 340,
   },
   welcomeArt: {
-    height: 102,
-    marginTop: 12,
-    marginBottom: 12,
+    height: 164,
+    marginTop: 20,
+    marginBottom: 22,
     backgroundColor: C.primarySoft,
     borderRadius: 28,
     alignItems: "center",
@@ -255,8 +253,8 @@ const styles = createBrandedStyles({
     borderRadius: 24,
     borderWidth: 1,
     borderColor: C.border,
-    padding: 16,
-    gap: 5,
+    padding: 20,
+    gap: 8,
   },
   sectionTitle: { color: C.text, fontSize: 19, fontWeight: "800", flexShrink: 1 },
   body: { color: C.textSecondary, fontSize: 14, lineHeight: 21 },
@@ -277,7 +275,7 @@ const styles = createBrandedStyles({
   phoneDivider: { height: 24, width: 1, backgroundColor: C.borderStrong, marginHorizontal: 12 },
   phoneText: { flex: 1, minWidth: 0, minHeight: 54, fontSize: 16, color: C.text },
   error: { color: C.danger, fontSize: 13, marginBottom: 2 },
-  footnote: { color: C.muted, fontSize: 11, lineHeight: 16, marginTop: 3 },
+  footnote: { color: C.muted, fontSize: 12, lineHeight: 18, marginTop: 10 },
   helpLink: {
     flexDirection: "row",
     alignItems: "center",

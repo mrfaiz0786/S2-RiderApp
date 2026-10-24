@@ -36,15 +36,15 @@ const styles = createBrandedStyles({
   tabs: {
     flexDirection: "row",
     paddingHorizontal: 10,
-    paddingTop: 8,
-    paddingBottom: 8,
+    paddingTop: 7,
+    paddingBottom: 4,
     borderTopWidth: 1,
     borderTopColor: theme.colors.border,
     backgroundColor: theme.colors.surface,
   },
   tab: {
     flex: 1,
-    minHeight: 60,
+    minHeight: 57,
     alignItems: "center",
     justifyContent: "center",
     gap: 4,
@@ -52,7 +52,7 @@ const styles = createBrandedStyles({
     paddingVertical: 8,
     marginHorizontal: 2,
   },
-  selected: { backgroundColor: theme.colors.primarySoft, borderRadius: 14 },
+  selected: { backgroundColor: theme.colors.primarySoft },
   label: { fontSize: 11, fontWeight: "700", color: theme.colors.muted },
   activeLabel: { color: theme.colors.primary },
 });
