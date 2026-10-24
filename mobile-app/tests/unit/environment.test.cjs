@@ -102,7 +102,8 @@ test("Expo build config rejects missing API settings and missing push file", () 
 });
 test("Application gates API mode instead of loading mock screens as live data", () => {
   const app = fs.readFileSync(path.join(root, "src/app/App.tsx"), "utf8");
-  assert.match(app, /appConfig\.dataMode !== "mock"/);
+  assert.match(app, /appConfig\.dataMode === "api"/);
+  assert.match(app, /LiveRiderApp/);
   assert.match(app, /IntegrationGate/);
   assert.doesNotMatch(app, /LiveBackendGate|services\/backend/);
 });

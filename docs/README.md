@@ -2,6 +2,8 @@
 
 ## Current mobile implementation
 
+- `hybrid-phase1.md`: connected existing-rider client, live/mock isolation, API coverage and server authorization blockers.
+
 - `test-rider-journey.md`: test credentials, sample verification, map/OTP/COD flow, persistence, reset and testing.
 - `test-rider-validation.md`: results for the current simulator branch, including unit, browser and Expo checks.
 - `architecture/codebase-map.md`: source layers, state ownership and 22-screen inventory.

@@ -32,6 +32,8 @@ export type RequestOptions<T> = {
   signal?: AbortSignal;
   authenticated?: boolean;
   idempotencyKey?: string;
+  /** Only for the backend's documented raw login response. */
+  responseFormat?: "envelope" | "raw";
   decode: Decoder<T>;
 };
 export function apiFailure(code: ApiErrorCode, message: string): ApiResult<never> {

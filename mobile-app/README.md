@@ -41,9 +41,9 @@ EXPO_PUBLIC_API_TIMEOUT_MS=15000
 EXPO_PUBLIC_PUSH_ENABLED=false
 ```
 
-These public values are bundled into the app. Never put provider admin keys, SMTP passwords, service accounts or static bearer tokens here. The separate backend team supplies the versioned HTTPS base URL. No API URL is needed to run the simulator.
+These public values are bundled into the app. Never put provider admin keys, SMTP passwords, service accounts or static bearer tokens here. The backend team supplies a staging HTTPS server **origin** (e.g. `https://staging.example.test`) for connected mode; do not append `/v1`, `/api/auth` or `/api/rider-app`. No API URL is needed to run the simulator.
 
-API mode currently shows the integration-pending gate; it never labels simulated data as live. Production refuses mock mode and remains blocked by the acceptance checklist in `src/config/integration-status.json`.
+API mode now has a separate **existing-rider read-only client** driven by the backend's documented `/api/auth` and `/api/rider-app` endpoints: password/OTP sign-in, validated JWT role, SecureStore session, assigned orders, history, profile and route summary/external navigation. It requires the backend HTTPS **server origin** (no `/api` suffix) and authorized staging credentials. Real delivery mutations are deliberately disabled because the supplied backend guide reports missing assignment ownership authorization. Public signup is only a pending-API information screen. See `../docs/hybrid-phase1.md`. Production remains blocked by `src/config/integration-status.json`.
 
 ## State, maps and notifications
 
@@ -63,13 +63,14 @@ src/
   features/    # auth/onboarding/home/delivery/earnings/history/notifications/profile/support/safety
   services/
     api/       # provider-independent HTTP client and draft backend operation catalog
-    session/   # SecureStore adapter and real-session integration primitives (not yet wired)
+    legacy/    # existing-backend DTOs, token-only session and read-only assignment API
+    session/   # separate future refresh-token integration primitives
     device/    # future native remote-push token bridge
     demo/      # explicit test codes and optional local device notifications
   shared/      # branded UI/theme, helpers and reset infrastructure
 ```
 
-Real APIs still need feature DTO decoders, authenticated navigation, server session restore/revocation, upload/location adapters and native acceptance. The simulator guards and persisted mock receipts are not real authorization or a financial ledger.
+The existing-backend client now has typed read DTOs and token-only native session restoration. Real delivery mutations, public signup, backend session revocation, private uploads, location streaming, native Google map, remote notifications and device acceptance remain outstanding. The simulator guards and persisted mock receipts are not real authorization or a financial ledger.
 
 ## Commands
 

@@ -48,8 +48,7 @@ function retryAfter(value: string | null): number | undefined {
     ? Math.min(86400, Math.max(0, Math.ceil((timestamp - Date.now()) / 1000)))
     : undefined;
 }
-
-/** JSON API transport only. No database SDK, provider key or server implementation. */
+/** JSON transport for both the documented raw auth response and standard envelopes. */
 export function createApiClient(settings: ApiClientSettings) {
   const baseUrl = settings.baseUrl.trim().replace(/\/+$/, "");
   const base = new URL(baseUrl);
@@ -63,11 +62,10 @@ export function createApiClient(settings: ApiClientSettings) {
   const transport = settings.transport ?? fetch;
 
   async function request<T>(path: string, options: RequestOptions<T>): Promise<ApiResult<T>> {
-    // Endpoints are relative to this API only. Never send bearer tokens to an upload URL.
     if (
       !/^\/[A-Za-z0-9/_.-]*$/.test(path) ||
       path.includes("//") ||
-      path.split("/").some((segment) => segment === "." || segment === "..")
+      path.split("/").some((part) => part === "." || part === "..")
     ) {
       return apiFailure("VALIDATION", "Invalid API path.");
     }
@@ -117,7 +115,6 @@ export function createApiClient(settings: ApiClientSettings) {
       const response = await transport(baseUrl + path + (query ? "?" + query : ""), {
         method,
         signal: controller.signal,
-        // The backend must use canonical endpoints, without auth-bearing redirects.
         redirect: "error",
         headers: {
           Accept: "application/json",
@@ -133,16 +130,23 @@ export function createApiClient(settings: ApiClientSettings) {
         let serverCode: string | undefined;
         try {
           const payload: unknown = await response.json();
-          if (isRecord(payload) && isRecord(payload.error))
-            serverCode = safeIdentifier(payload.error.code);
+          if (isRecord(payload)) {
+            serverCode = safeIdentifier(
+              typeof payload.error === "string"
+                ? payload.error
+                : isRecord(payload.error)
+                  ? payload.error.code
+                  : undefined,
+            );
+          }
         } catch {
-          /* A proxy may return non-JSON errors. Never expose its body. */
+          /* A proxy may return non-JSON. Never display its body. */
         }
         if (response.status === 401 && options.authenticated !== false) {
           try {
             settings.onUnauthorized?.();
           } catch {
-            /* UI callbacks must not replace an API error. */
+            /* Do not mask the API error. */
           }
         }
         return {
@@ -160,11 +164,18 @@ export function createApiClient(settings: ApiClientSettings) {
       try {
         if (response.status === 204)
           return { ok: true, data: options.decode(undefined), requestId };
-        const envelope: unknown = await response.json();
-        if (!isRecord(envelope) || !Object.prototype.hasOwnProperty.call(envelope, "data")) {
+        const payload: unknown = await response.json();
+        if (options.responseFormat === "raw") {
+          return { ok: true, data: options.decode(payload), requestId };
+        }
+        if (
+          !isRecord(payload) ||
+          payload.success === false ||
+          !Object.prototype.hasOwnProperty.call(payload, "data")
+        ) {
           return apiFailure("INVALID_RESPONSE", messages.INVALID_RESPONSE);
         }
-        return { ok: true, data: options.decode(envelope.data), requestId };
+        return { ok: true, data: options.decode(payload.data), requestId };
       } catch {
         if (controller.signal.aborted) throw new Error("Aborted while reading response");
         return apiFailure("INVALID_RESPONSE", messages.INVALID_RESPONSE);
@@ -177,8 +188,7 @@ export function createApiClient(settings: ApiClientSettings) {
       options.signal?.removeEventListener("abort", cancel);
     }
   }
-  // Mutations are NEVER retried automatically. Reuse the original idempotency key
-  // only after reconciling ambiguous success with the canonical resource endpoint.
+  // Never automatically retry delivery or financial mutations.
   return { request };
 }
 export type ApiClient = ReturnType<typeof createApiClient>;

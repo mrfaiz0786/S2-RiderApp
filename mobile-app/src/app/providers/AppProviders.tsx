@@ -1,3 +1,4 @@
+import { appConfig } from "@/config/app";
 import { AuthProvider } from "@/features/auth/model";
 import { DeliveryProvider } from "@/features/delivery/model";
 import { NotificationsProvider } from "@/features/notifications/model";
@@ -39,9 +40,13 @@ export function AppProviders({ children }: { children: ReactNode }) {
     <AppErrorBoundary>
       <SafeAreaProvider>
         <BrandMotionProvider>
-          <SessionResetProvider>
-            <SessionScope>{children}</SessionScope>
-          </SessionResetProvider>
+          {appConfig.dataMode === "api" ? (
+            children
+          ) : (
+            <SessionResetProvider>
+              <SessionScope>{children}</SessionScope>
+            </SessionResetProvider>
+          )}
         </BrandMotionProvider>
       </SafeAreaProvider>
     </AppErrorBoundary>
