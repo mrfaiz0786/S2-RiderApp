@@ -5,10 +5,10 @@ const { routes, tabs, getRoute, isRouteName, defaultBackRoute } =
   loadSource("navigation/routes.ts");
 const { navigationReducer: reduce, initialNavigationState: initial } =
   loadSource("navigation/reducer.ts");
-test("all 21 routes have unique names and legacy references", () => {
-  assert.equal(routes.length, 21);
-  assert.equal(new Set(routes.map((r) => r.name)).size, 21);
-  assert.equal(new Set(routes.map((r) => r.legacyId)).size, 21);
+test("all 22 routes have unique names and legacy references", () => {
+  assert.equal(routes.length, 22);
+  assert.equal(new Set(routes.map((r) => r.name)).size, 22);
+  assert.equal(new Set(routes.map((r) => r.legacyId)).size, 22);
 });
 test("four primary tabs remain available", () =>
   assert.deepEqual(

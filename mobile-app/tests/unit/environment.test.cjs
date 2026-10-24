@@ -71,7 +71,7 @@ test("Mock Expo config does not require Firebase registration", () => {
     assert.ok(config.plugins.includes("expo-secure-store"));
     assert.equal(
       config.plugins.some((plugin) => Array.isArray(plugin) && plugin[0] === "expo-notifications"),
-      false,
+      true,
     );
   });
 });

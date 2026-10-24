@@ -1,9 +1,11 @@
 node_modules/
 dist/
 coverage/
+.validation/
 .expo*/
 .theme-backup*/
 .mcp-backups/
+.mcp-trash/
 archive/
 .env
 .env.*

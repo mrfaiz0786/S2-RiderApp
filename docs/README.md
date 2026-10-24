@@ -2,7 +2,9 @@
 
 ## Current mobile implementation
 
-- `architecture/codebase-map.md`: source layers, state ownership and 21-screen inventory.
+- `test-rider-journey.md`: test credentials, sample verification, map/OTP/COD flow, persistence, reset and testing.
+- `test-rider-validation.md`: results for the current simulator branch, including unit, browser and Expo checks.
+- `architecture/codebase-map.md`: source layers, state ownership and 22-screen inventory.
 - `architecture/integration-boundaries.md`: mobile/backend responsibility split and actual integration status.
 - `mobile-validation.md`: verified checks and outstanding native/API acceptance.
 - `mobile-only-cleanup.md`: cleanup inventory and local recovery instructions.

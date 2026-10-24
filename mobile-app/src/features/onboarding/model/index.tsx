@@ -21,5 +21,9 @@ export function useOnboarding() {
     setTermsAccepted: (value: BooleanUpdate) => dispatch({ type: "termsChanged", value }),
     docStatus: (id: string) => documentStatus(state, id),
     docTone: documentTone,
+    attachSamples: () => dispatch({ type: "attachSampleDocuments" }),
+    checkSampleVehicle: () => dispatch({ type: "checkSampleVehicle" }),
+    startSampleReview: () => dispatch({ type: "startSampleReview" }),
+    finishSampleReview: () => dispatch({ type: "finishSampleReview" }),
   };
 }

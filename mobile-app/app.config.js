@@ -60,8 +60,16 @@ module.exports = ({ config }) => {
     android,
     plugins: [
       ...(config.plugins || []),
-      ...(pushEnabled
-        ? [["expo-notifications", { color: "#044B51", defaultChannel: "deliveries" }]]
+      ...(pushEnabled || mode === "mock"
+        ? [
+            [
+              "expo-notifications",
+              {
+                color: "#044B51",
+                defaultChannel: mode === "mock" ? "ybm-test-orders" : "deliveries",
+              },
+            ],
+          ]
         : []),
     ],
   };

@@ -1,6 +1,7 @@
 import { OtpScreen } from "@/features/auth/screens/OtpScreen";
 import { WelcomeScreen } from "@/features/auth/screens/WelcomeScreen";
 import { ActiveJobScreen } from "@/features/delivery/screens/ActiveJobScreen";
+import { CodPaymentScreen } from "@/features/delivery/screens/CodPaymentScreen";
 import { DeliveryCompletionScreen } from "@/features/delivery/screens/DeliveryCompletionScreen";
 import { DeliveryNavigationScreen } from "@/features/delivery/screens/DeliveryNavigationScreen";
 import { OffersScreen } from "@/features/delivery/screens/OffersScreen";
@@ -37,6 +38,7 @@ export const screenRegistry: Record<RouteName, ComponentType> = {
   pickup: PickupScreen,
   "delivery-navigation": DeliveryNavigationScreen,
   "delivery-completion": DeliveryCompletionScreen,
+  "cod-payment": CodPaymentScreen,
   earnings: EarningsScreen,
   payouts: PayoutsScreen,
   history: HistoryScreen,

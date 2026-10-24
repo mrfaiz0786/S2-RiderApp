@@ -1,0 +1,81 @@
+import { StyleSheet } from "react-native";
+import { theme } from "./index";
+export const journeyStyles = StyleSheet.create({
+  title: {
+    color: theme.colors.primary,
+    fontFamily: theme.typography.family.bold,
+    fontSize: 20,
+    lineHeight: 26,
+  },
+  heading: {
+    color: theme.colors.text,
+    fontFamily: theme.typography.family.bold,
+    fontSize: 17,
+    lineHeight: 24,
+  },
+  body: {
+    color: theme.colors.textSecondary,
+    fontSize: 14,
+    lineHeight: 21,
+    fontFamily: theme.typography.family.regular,
+  },
+  small: {
+    color: theme.colors.muted,
+    fontSize: 12,
+    lineHeight: 18,
+    fontFamily: theme.typography.family.regular,
+  },
+  amount: {
+    color: theme.colors.primary,
+    fontFamily: theme.typography.family.extraBold,
+    fontSize: 34,
+    lineHeight: 44,
+  },
+  error: { color: theme.colors.danger, fontSize: 14, lineHeight: 21, marginVertical: 6 },
+  success: { color: theme.colors.success, fontSize: 14, lineHeight: 21 },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 12,
+    flexWrap: "wrap",
+  },
+  divider: { height: 1, backgroundColor: theme.colors.border, marginVertical: 6 },
+  hint: {
+    backgroundColor: theme.colors.accentSoft,
+    borderRadius: 16,
+    padding: 14,
+    gap: 6,
+    marginVertical: 8,
+  },
+  hero: {
+    backgroundColor: theme.colors.primary,
+    borderRadius: 24,
+    padding: 22,
+    gap: 12,
+    marginBottom: 16,
+  },
+  heroText: {
+    color: theme.colors.primaryOn,
+    fontFamily: theme.typography.family.bold,
+    fontSize: 25,
+  },
+  heroBody: { color: "#DDEEE9", fontSize: 14, lineHeight: 21 },
+  pill: {
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    borderRadius: 14,
+    padding: 12,
+    minHeight: 46,
+  },
+  selected: { backgroundColor: theme.colors.primarySoft, borderColor: theme.colors.primary },
+  sampleDocument: {
+    borderWidth: 2,
+    borderStyle: "dashed",
+    borderColor: theme.colors.borderStrong,
+    borderRadius: 18,
+    backgroundColor: theme.colors.primaryTint,
+    padding: 18,
+    gap: 8,
+  },
+});

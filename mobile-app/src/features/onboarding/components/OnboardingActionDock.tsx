@@ -2,6 +2,7 @@ import { useNavigation } from "@/navigation/NavigationProvider";
 import { BrandActionDock } from "@/shared/ui/BrandActionDock";
 import { workCityName } from "../data/workAreas";
 import { useOnboarding } from "../model";
+import { sampleDocumentsReady } from "../model/reducer";
 import { canContinueFromHub } from "../model/selectors";
 export function OnboardingActionDock() {
   const { route, navigate } = useNavigation();
@@ -10,8 +11,9 @@ export function OnboardingActionDock() {
     case "vehicle-documents":
       return (
         <BrandActionDock
-          title="Choose your work city"
-          caption="Vehicle and documents are a local preview"
+          title="Choose your test work city"
+          caption="Attach sample documents and check the sample vehicle"
+          disabled={!state.vehicleChecked || !sampleDocumentsReady(state)}
           onPress={() => navigate("work-city")}
         />
       );
@@ -32,11 +34,7 @@ export function OnboardingActionDock() {
       return (
         <BrandActionDock
           title="Continue to declarations"
-          caption={
-            state.workHub
-              ? "Sample hub selected; no real assignment"
-              : "Choose a sample hub to continue"
-          }
+          caption={state.workHub ? "Sample hub selected" : "Choose a sample hub"}
           disabled={!canContinueFromHub(state)}
           onPress={() => navigate("declarations")}
         />

@@ -127,6 +127,15 @@ export const routes = [
     tab: "home",
   },
   {
+    name: "cod-payment",
+    title: "Test COD Payment",
+    group: "Delivery",
+    legacyId: 22,
+    showTabs: false,
+    focusedDelivery: true,
+    tab: "home",
+  },
+  {
     name: "earnings",
     title: "Earnings Dashboard",
     group: "Payments",

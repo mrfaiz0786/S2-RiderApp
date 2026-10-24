@@ -2,21 +2,34 @@
 
 ## Scope
 
-This repository implements the rider application, not the backend. Keep server code, SQL, provider admin keys, email/SMS sending and financial settlement in the backend team's repository. The Android package remains `online.aadityakumar.ybmrider`.
+React Native / Expo / TypeScript mobile app only. The backend team owns databases, real authentication/OTP, dispatch, KYC, private uploads, notification sending, payouts and operations. Android package: `online.aadityakumar.ybmrider`.
 
-The original 21 screens, brand assets, Nunito Sans, teal/orange theme and feature reducers are retained. Mock data remains explicitly labelled until real endpoint contracts and screen adapters are supplied and tested.
+The branded app now has **22 route screens**, including a dedicated test COD payment screen. The complete test-rider simulation is available in mock mode; API mode remains gated until real contracts and screen adapters are integrated.
 
-## Development
+## Run the test rider journey
 
-Use Node 24.22.1 or later supported 24.x. Run `npm ci` here. Copy `.env.example` to `.env` only on a new checkout; do not overwrite an existing environment accidentally.
+Use Node 24.22.1 or later supported 24.x. In this folder run `npm ci`. On a new checkout copy `.env.example` to `.env`; do not overwrite an existing environment blindly.
 
 ```powershell
 npm run start:go
-# For an installed native development client:
+# Or, for an installed native development client:
 npm run start:dev
 ```
 
-The installed development-client package can change the default launch target; use the explicit commands above. `npm run android` opens the Android target; `npm run android:native` builds/runs native Android when Android Studio, SDK and Java are configured. Native builds can generate `android/`; review generated changes before committing.
+Use an Expo Go version compatible with this project's SDK 57. Rebuild an existing native development client after installing the new AsyncStorage and react-native-svg dependencies. `npm run android:native` requires Android Studio/SDK/Java and creates native build files; no native APK is produced by a JavaScript export.
+
+| Test step | Value |
+|---|---|
+| Phone | `9999999999` |
+| Login OTP | `123456` |
+| Pickup PIN | `112233` |
+| Delivery OTP | `654321` |
+| COD amount | `649.00` rupees |
+| Earnings per finished order | `86.00` rupees |
+
+The app displays each value at the relevant step and provides fill buttons. Attach SAMPLE / TEST document cards, simulate the vehicle check, select a city/hub, confirm the test declarations and complete the sample review. Go online, receive and accept an order, simulate pickup/drop routes, verify the codes and confirm COD where applicable. Prepaid orders skip the cash page.
+
+History and earnings now come from the deliveries you complete, not fixed example records. Simulated customer cash is separate from rider income. No real account, SMS, document verification, order, cash collection or transfer occurs. Full steps: `../docs/test-rider-journey.md`.
 
 ## Public configuration
 
@@ -28,52 +41,51 @@ EXPO_PUBLIC_API_TIMEOUT_MS=15000
 EXPO_PUBLIC_PUSH_ENABLED=false
 ```
 
-`EXPO_PUBLIC_` values are included in the client bundle and are not secrets. The backend team must supply the versioned HTTPS API base URL; there is no database or provider API key in the client. Do not add static access tokens, refresh tokens, SMTP passwords or service-account credentials to environment files.
+These public values are bundled into the app. Never put provider admin keys, SMTP passwords, service accounts or static bearer tokens here. The separate backend team supplies the versioned HTTPS base URL. No API URL is needed to run the simulator.
 
-Mock mode is for development/staging. API mode fails closed on missing/invalid configuration and currently displays the integration-pending gate. No live screen wiring is claimed. Production builds refuse mock mode and require the evidence-backed checklist in `src/config/integration-status.json`.
+API mode currently shows the integration-pending gate; it never labels simulated data as live. Production refuses mock mode and remains blocked by the acceptance checklist in `src/config/integration-status.json`.
 
-## Source structure
+## State, maps and notifications
+
+Fictional deliveries, route progress, timelines and the latest 100 completed receipts are stored locally with AsyncStorage. Login, profile input, OTP input and sample-document checks remain memory-only. Reopen the app, log in and perform sample verification again to resume saved delivery history. Profile > Reset demo progress clears saved test orders and totals too.
+
+The map displays real OpenStreetMap street tiles with attribution and an interpolated test rider on scripted coordinates. It is not GPS, turn-by-turn directions or a routing API. Street tiles need internet. The route overlay and progression controls still work when tiles fail. Playback pauses on screen exit/backgrounding; reduced-motion users can step or jump.
+
+In-app order banners and the inbox always work without notification permissions. Optional **Enable device test alerts** requests local phone notifications. It does not need Firebase registration or remote push credentials. Remote push remains disabled. Native device delivery/permissions and native map caching/headers still need physical-device acceptance. Cold-start notification routing is not implemented; use Home after test login to resume the known order.
+
+## Structure
 
 ```text
 src/
-  app/         # startup, providers, shell, error and integration gates
-  config/      # validated public environment and release checklist
-  navigation/  # typed routes, runtime validation, screen registry
-  features/    # auth, onboarding, home, delivery, earnings, history, notifications, support, safety, profile
+  app/         # startup, providers, shell, global order alert, error/integration gates
+  config/      # validated public configuration and release checklist
+  navigation/  # routes, screen registry and simulator route guards
+  features/    # auth/onboarding/home/delivery/earnings/history/notifications/profile/support/safety
   services/
-    api/       # transport, safe errors, draft operation catalog and adapter boundary
-    session/   # SecureStore adapter, serialized storage and single-flight refresh
-    device/    # optional native notification-token acquisition
-    demo/      # public fictional demo codes only
-  shared/      # theme, UI, small helpers and state infrastructure
+    api/       # provider-independent HTTP client and draft backend operation catalog
+    session/   # SecureStore adapter and real-session integration primitives (not yet wired)
+    device/    # future native remote-push token bridge
+    demo/      # explicit test codes and optional local device notifications
+  shared/      # branded UI/theme, helpers and reset infrastructure
 ```
 
-UI must not call provider SDKs or construct network requests. Add feature response decoders and adapters using `services/api`, then replace fixtures one feature at a time. The generic client expects `{ data: ... }` success envelopes and requires a decoder; revise this centrally if the backend team approves a different contract. It maps timeout/cancellation/network/auth/validation/conflict/rate-limit/server errors, never displays raw server internals and never automatically retries mutations.
-
-Session primitives are not yet a wired AuthProvider. On login capture the token-store generation before starting a request; clear before account switching. Refresh uses one in-flight operation and cannot resurrect a locally cleared session. Server revocation and device unregistration must accompany logout; deleting local tokens alone is not server revocation. SecureStore failures must be surfaced, not silently treated as successful logout. Web authenticated-session persistence is deliberately unsupported by this native adapter.
-
-## Native notifications
-
-The client requests permission and obtains a native device token. The backend owns token registration, sending, invalid-token cleanup and all server credentials. Push stays off by default. Android registration requires a matching `google-services.json`, supplied as an EAS file variable `GOOGLE_SERVICES_JSON` or a Git-ignored local file. Enable only after the device API is agreed. The current bridge is native-token based, not an Expo Push Service sender. Physical-device delivery, token rotation, logout cleanup, notification taps and cold-start routing still require integration/testing.
-
-## Build profiles
-
-`eas.json` defines `development` (native development APK), `preview` (internal mock APK) and `production` (API-only AAB, blocked pending acceptance). EAS account/project linking, signing and remote build environment configuration remain the app owner's release responsibilities; no cloud build was started. Ignored local `.env` files are not a substitute for configured EAS environments. Do not use production flags merely to preview the UI.
+Real APIs still need feature DTO decoders, authenticated navigation, server session restore/revocation, upload/location adapters and native acceptance. The simulator guards and persisted mock receipts are not real authorization or a financial ledger.
 
 ## Commands
 
 | Command | Purpose |
 |---|---|
-| `npm run check` | TypeScript, architecture, draft-doc synchronization, unit tests and formatting |
+| `npm run check` | TypeScript, architecture, API-doc synchronization, unit/regression tests and formatting |
 | `npm run check:expo` | Installed Expo dependency compatibility |
 | `npm run doctor` | Expo project diagnostics |
-| `npm run api:docs` | Regenerate endpoint Markdown and JSON from the draft catalog |
-| `npm run format` | Format managed client source and config |
-| `npm run export:android` | Export Android JavaScript/Hermes; not an APK |
-| `npm audit` | Dependency advisory report; never use force fixes without compatibility review |
+| `npm run export:android` | Android JavaScript/Hermes export, not an APK |
+| `npm run export:web` | Browser test build |
+| `npx playwright install chromium` | Install browser used by rendered-journey tests |
+| `npm run test:e2e` | Click through COD/prepaid, errors, persistence and reset; requires the web export |
+| `npm run api:docs` | Regenerate draft endpoint handoff |
+| `npm run format` | Format source, tests and configuration |
+| `npm audit` | Review dependency advisories without forced incompatible upgrades |
 
-## Mock credentials and limits
+Browser tests stub third-party tiles; they do not certify real tile availability or Android notification delivery. Test output is ignored under `.validation/`. EAS profiles remain development, preview and production; no cloud build or backend deployment is triggered by these scripts.
 
-Use fictional ten-digit phones only. Mock login OTP: `123456`. Mock delivery PIN: `654321`. They are intentionally public preview fixtures and never authorize API requests. State is memory-only; resets and process restarts clear the mock workflow. History/earnings are fictional and are not updated into a real financial ledger. No real identity or payment details should be entered.
-
-See `../docs/api/backend-api-requirements.md`, `../docs/mobile-validation.md` and `../CONTRIBUTING.md` before integration or release.
+See `../docs/test-rider-journey.md`, `../docs/mobile-validation.md`, `../docs/api/backend-api-requirements.md` and `../CONTRIBUTING.md`.

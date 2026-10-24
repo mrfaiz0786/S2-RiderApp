@@ -10,7 +10,7 @@ npm ci
 npm run start:go
 ```
 
-Use Node 24.22.1 or later supported 24.x. The existing 21-screen Warm Momentum experience remains available in explicit mock mode. No real SMS, rider approval, order completion, payment or emergency dispatch occurs in that mode.
+Use Node 24.22.1 or later supported 24.x. The Warm Momentum app now has 22 screens, including a complete guided test-rider journey and dedicated COD payment screen. Test login: `9999999999` / `123456`; pickup PIN: `112233`; delivery OTP: `654321`. Test orders use real street-map tiles with simulated movement and update local history/earnings after completion. See [the test-rider walkthrough](docs/test-rider-journey.md). No real SMS, KYC, dispatch, cash collection or transfer occurs.
 
 ## Project ownership
 

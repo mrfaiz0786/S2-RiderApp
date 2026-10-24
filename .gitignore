@@ -11,6 +11,7 @@ coverage/
 
 # Local recovery material (may contain old private environment files)
 .mcp-backups/
+.mcp-trash/
 archive/
 
 # Local environment and native credentials

@@ -1,171 +1,129 @@
-import { sampleJobs } from "@/features/delivery/data/fixtures";
 import { useDelivery } from "@/features/delivery/model";
+import { rupeesFromPaise } from "@/features/delivery/data/testScenario";
 import { useNavigation } from "@/navigation/NavigationProvider";
 import { demoConfig } from "@/services/demo/credentials";
-import { useFeedback } from "@/shared/state/FeedbackProvider";
-import { theme } from "@/shared/theme";
-import { createBrandedStyles } from "@/shared/theme/createBrandedStyles";
-import { C } from "@/shared/theme/screenPalette";
-import { AppIcon } from "@/shared/ui/AppIcon";
-import { BrandButton as Button } from "@/shared/ui/BrandButton";
-import { BrandedAlert as Alert } from "@/shared/ui/BrandDialog";
+import { journeyStyles as s } from "@/shared/theme/journeyStyles";
+import { BrandButton } from "@/shared/ui/BrandButton";
 import { Card } from "@/shared/ui/Card";
 import { Field } from "@/shared/ui/Field";
+import { Row } from "@/shared/ui/Row";
 import { ScreenHero } from "@/shared/ui/ScreenHero";
-import { Tag } from "@/shared/ui/Tag";
+import { TestHint } from "@/shared/ui/TestHint";
 import { useState } from "react";
-import { Text, View } from "react-native";
-
+import { Text } from "react-native";
 export function DeliveryCompletionScreen() {
-  const { pickupDone, deliveryDone, completeDelivery } = useDelivery();
-  const [pin, setPin] = useState("");
-  const { navigate: go } = useNavigation();
-  const { setDemoNotice } = useFeedback();
+  const { order, status, verifyDelivery, history } = useDelivery();
+  const { navigate } = useNavigation();
+  const [code, setCode] = useState("");
+  const [error, setError] = useState("");
+  if (!order)
+    return (
+      <Card>
+        <Text style={s.body}>There is no active test order.</Text>
+        <BrandButton title="Go home" onPress={() => navigate("home")} />
+      </Card>
+    );
+  const receipt = history.find((item) => item.order.id === order.id);
+  const completed = status === "completed" && Boolean(receipt);
   return (
     <>
       <ScreenHero
-        eyebrow={"DELIVERY CONFIRMATION"}
-        title={deliveryDone ? "Delivery completed" : "Complete delivery"}
+        eyebrow={completed ? "TEST DELIVERY COMPLETE" : "STEP 3 · HANDOVER"}
+        title={completed ? "Delivered successfully" : "Enter this delivery OTP"}
         subtitle={
-          deliveryDone
-            ? "Your sample delivery is marked complete."
-            : "Confirm the handover using the recipient PIN."
+          completed
+            ? "Your simulated receipt, history and earnings have been updated."
+            : "Verify the sample recipient code after reaching the drop."
         }
         icon="check-circle-outline"
       />
-      <Card>
-        <View style={styles.rowBetween}>
-          <View style={styles.flexOne}>
-            <Text style={styles.eyebrow}>JOB REFERENCE</Text>
-            <Text style={styles.cardTitle}>{sampleJobs[0].id}</Text>
-          </View>
-          <Tag
-            label={deliveryDone ? "DEMO COMPLETE" : "AWAITING PIN"}
-            tone={deliveryDone ? "green" : "amber"}
+      {completed ? (
+        <Card>
+          <Text style={s.heading}>{order.id}</Text>
+          <Text style={s.success}>DELIVERED · SIMULATION</Text>
+          <Row label="Test rider earnings" value={rupeesFromPaise(order.payoutPaise)} />
+          <Row
+            label="Payment"
+            value={
+              order.paymentMethod === "cod" ? "Simulated cash collected" : "Test order prepaid"
+            }
           />
-        </View>
-        <View style={styles.divider} />
-        {deliveryDone ? (
-          <>
-            <View style={styles.statusHero}>
-              <AppIcon name="check-circle-outline" size={28} color={C.green} />
-              <Text style={styles.cardTitle}>Sample delivery completed</Text>
-            </View>
-            <Text style={styles.bodyMuted}>
-              This is a local success state only. No recipient was contacted and no backend delivery
-              record was created.
+          <Row label="Customer amount" value={rupeesFromPaise(order.customerTotalPaise)} />
+          <Text style={s.body}>
+            {receipt ? new Date(receipt.completedAt).toLocaleString() : ""}
+          </Text>
+          <Text style={s.small}>
+            No real delivery, transfer, cash collection or payout occurred.
+          </Text>
+          <BrandButton title="View this delivery in history" onPress={() => navigate("history")} />
+          <BrandButton title="View test earnings" secondary onPress={() => navigate("earnings")} />
+          <BrandButton title="Back to rider home" secondary onPress={() => navigate("home")} />
+        </Card>
+      ) : status === "awaiting_payment" ? (
+        <Card>
+          <Text style={s.success}>Sample OTP verified. COD confirmation is still required.</Text>
+          <BrandButton title="Continue to COD payment" onPress={() => navigate("cod-payment")} />
+        </Card>
+      ) : (
+        <Card>
+          <Text style={s.heading}>
+            {order.drop.name} · {order.id}
+          </Text>
+          <Text style={s.body}>{order.drop.address}</Text>
+          <TestHint
+            title={"Enter this OTP: " + demoConfig.deliveryPin}
+            detail="Public test code only. Real recipient OTPs must come from the backend and must not be shown to riders."
+          />
+          <Field
+            label="Test delivery OTP"
+            value={code}
+            onChangeText={(value) => {
+              setCode(value.replace(/\D/g, "").slice(0, 6));
+              setError("");
+            }}
+            placeholder="654321"
+            keyboardType="number-pad"
+            maxLength={6}
+          />
+          {error ? (
+            <Text accessibilityLiveRegion="polite" style={s.error}>
+              {error}
             </Text>
-          </>
-        ) : (
-          <>
-            <Text style={styles.fieldLabel}>RECIPIENT OTP / PIN</Text>
-            <Field
-              label="6-digit test PIN"
-              value={pin}
-              onChangeText={(v) => setPin(v.replace(/\D/g, "").slice(0, 6))}
-              placeholder="Enter recipient PIN"
-              keyboardType="number-pad"
-              maxLength={6}
-            />
-            <Text style={styles.helper}>Demo PIN: 654321 · This is not a real customer code.</Text>
-            <Button
-              disabled={!pickupDone || deliveryDone}
-              title="Verify PIN & complete demo"
-              onPress={() => {
-                if (pin.length !== 6) {
-                  Alert.alert("Enter the full PIN", "Please enter all 6 digits before continuing.");
-                  return;
-                }
-                if (pin === demoConfig.deliveryPin && pickupDone) {
-                  completeDelivery();
-                  setPin("");
-                  setDemoNotice(
-                    "Demo delivery completed locally. No server-side PIN verification occurred.",
-                  );
-                } else {
-                  Alert.alert(
-                    "PIN not accepted",
-                    "The entered PIN does not match the local demo PIN. No delivery status was changed.",
-                  );
-                }
-              }}
-            />
-          </>
-        )}
-        <Button title="Report recipient unavailable" secondary onPress={() => go("support")} />
-        <Text style={styles.helper}>
-          Production requires server-side PIN validation and any required proof-of-delivery checks
-          before completing a real order.
-        </Text>
-      </Card>
-      {deliveryDone ? (
-        <>
-          <Card>
-            <Text style={styles.cardTitle}>What’s next?</Text>
-            <Text style={styles.bodyMuted}>
-              Review the illustrative earnings summary for this sample job.
-            </Text>
-            <Button title="View earnings →" onPress={() => go("earnings")} />
-            <Button title="Back to rider home" secondary onPress={() => go("home")} />
-          </Card>
-        </>
-      ) : null}
+          ) : null}
+          <BrandButton
+            title={
+              order.paymentMethod === "cod"
+                ? "Verify OTP and open COD payment"
+                : "Verify OTP and finish prepaid delivery"
+            }
+            disabled={status !== "at_dropoff"}
+            onPress={() => {
+              if (code !== demoConfig.deliveryPin) {
+                setError("Incorrect delivery OTP. Enter " + demoConfig.deliveryPin + ".");
+                return;
+              }
+              verifyDelivery(code);
+              setCode("");
+              if (order.paymentMethod === "cod") navigate("cod-payment");
+            }}
+          />
+          <BrandButton
+            title="Fill delivery OTP"
+            secondary
+            onPress={() => setCode(demoConfig.deliveryPin)}
+          />
+          {status !== "at_dropoff" ? (
+            <>
+              <Text style={s.error}>Complete the pickup and simulated drop route first.</Text>
+              <BrandButton
+                title="Return to drop route"
+                secondary
+                onPress={() => navigate("delivery-navigation")}
+              />
+            </>
+          ) : null}
+        </Card>
+      )}
     </>
   );
 }
-const styles = createBrandedStyles({
-  rowBetween: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: 12,
-    marginVertical: 6,
-  },
-  flexOne: { flex: 1 },
-  eyebrow: {
-    fontSize: 10,
-    fontWeight: "700",
-    letterSpacing: 1.2,
-    color: C.blue,
-    marginBottom: 7,
-    marginTop: 2,
-  },
-  cardTitle: {
-    fontFamily: theme.typography.family.bold,
-    fontSize: 16,
-    fontWeight: "700",
-    color: C.ink,
-    marginBottom: 2,
-  },
-  divider: { height: 1, backgroundColor: C.line, marginVertical: 7 },
-  statusHero: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    alignItems: "center",
-    gap: 12,
-    marginBottom: 8,
-  },
-  bodyMuted: {
-    fontFamily: theme.typography.family.regular,
-    fontSize: 13,
-    lineHeight: 20,
-    color: C.muted,
-    marginTop: 2,
-    flexShrink: 1,
-  },
-  fieldLabel: {
-    fontFamily: theme.typography.family.semibold,
-    fontSize: 12,
-    fontWeight: "600",
-    color: theme.colors.textSecondary,
-    marginBottom: 7,
-  },
-  helper: {
-    fontFamily: theme.typography.family.regular,
-    fontSize: 12,
-    lineHeight: 18,
-    color: C.muted,
-    marginTop: 2,
-    flexShrink: 1,
-  },
-});

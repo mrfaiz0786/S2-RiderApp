@@ -1,9 +1,9 @@
 name: Mobile quality
 on:
   push:
-    paths: ['mobile-app/**', 'docs/api/**', '.github/workflows/mobile-quality.yml']
+    paths: ['mobile-app/**', 'docs/api/**', 'docs/test-rider-journey.md', '.github/workflows/mobile-quality.yml']
   pull_request:
-    paths: ['mobile-app/**', 'docs/api/**', '.github/workflows/mobile-quality.yml']
+    paths: ['mobile-app/**', 'docs/api/**', 'docs/test-rider-journey.md', '.github/workflows/mobile-quality.yml']
 permissions:
   contents: read
 concurrency:
@@ -30,5 +30,8 @@ jobs:
           cache-dependency-path: mobile-app/package-lock.json
       - run: npm ci
       - run: npm run check
-      - run: npx expo install --check
+      - run: npm run check:expo
       - run: npm run export:android
+      - run: npm run export:web
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e

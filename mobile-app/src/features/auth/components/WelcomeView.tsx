@@ -1,3 +1,5 @@
+import { demoConfig } from "@/services/demo/credentials";
+import { TestHint } from "@/shared/ui/TestHint";
 import type { Language } from "@/shared/i18n/translations";
 import { theme } from "@/shared/theme";
 import { createBrandedStyles } from "@/shared/theme/createBrandedStyles";
@@ -70,6 +72,18 @@ export function WelcomeView({
       <View style={styles.formCard}>
         <Text style={styles.sectionTitle}>Start with your number</Text>
         <Text style={styles.body}>We will guide you through your rider setup.</Text>
+        <TestHint
+          title={"Enter this number: " + demoConfig.testPhone}
+          detail="Test rider only. No SMS, phone call or real account will be created."
+        />
+        <BrandButton
+          title="Fill test rider number"
+          secondary
+          onPress={() => {
+            onPhoneChange(demoConfig.testPhone);
+            setError("");
+          }}
+        />
         <Text style={styles.label}>Mobile number</Text>
         <View style={[styles.phoneInput, error ? styles.inputError : null]}>
           <Text style={styles.countryCode}>+91</Text>
@@ -97,8 +111,8 @@ export function WelcomeView({
         <BrandButton
           title="Get started"
           onPress={() => {
-            if (phone.length !== 10) {
-              setError("Enter a 10-digit number to continue.");
+            if (phone !== demoConfig.testPhone) {
+              setError("Enter the displayed test number: " + demoConfig.testPhone + ".");
               return;
             }
             Keyboard.dismiss();
