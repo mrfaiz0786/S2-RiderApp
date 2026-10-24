@@ -8,7 +8,6 @@ import { BrandButton } from "@/shared/ui/BrandButton";
 import { BrandMark } from "@/shared/ui/BrandMark";
 import { RoutePoint } from "@/shared/ui/RoutePoint";
 import { SectionTitle } from "@/shared/ui/SectionTitle";
-import { Shortcut } from "@/shared/ui/Shortcut";
 import { StatusPill } from "@/shared/ui/StatusPill";
 import { Switch, Text, View } from "react-native";
 const C = theme.colors;
@@ -32,12 +31,43 @@ export function RiderDashboard({
   onToggleOnline: (value: boolean) => void;
   onNavigate: (screenId: RouteName) => void;
 }) {
+  const nextStep = !jobAccepted
+    ? {
+        number: 1,
+        title: "Choose an order",
+        detail: "Review an available delivery offer",
+        route: "offers" as const,
+        action: "See orders",
+      }
+    : !pickupDone
+      ? {
+          number: 2,
+          title: "Pick up the order",
+          detail: "Confirm the handover at the store",
+          route: "active-job" as const,
+          action: "Continue pickup",
+        }
+      : !deliveryDone
+        ? {
+            number: 3,
+            title: "Deliver the order",
+            detail: "Follow the route and confirm delivery",
+            route: "delivery-navigation" as const,
+            action: "Continue delivery",
+          }
+        : {
+            number: 4,
+            title: "Delivery complete",
+            detail: "Check your earnings and order history",
+            route: "earnings" as const,
+            action: "View earnings",
+          };
   return (
     <>
       <View style={styles.homeHero}>
         <View style={styles.heroHeading}>
           <View style={styles.flexOne}>
-            <Text style={styles.heroEyebrow}>RIDER DASHBOARD</Text>
+            <Text style={styles.heroEyebrow}>YOUR DELIVERY DAY</Text>
             <Text style={styles.heroTitle}>Hello, {name.trim().split(" ")[0] || "Rider"}!</Text>
             <Text style={styles.heroDescription}>Your day, your deliveries.</Text>
           </View>
@@ -87,6 +117,19 @@ export function RiderDashboard({
         </View>
       </View>
 
+      <SectionTitle right={`Step ${nextStep.number} of 4`}>Next step</SectionTitle>
+      <View style={styles.stepCard}>
+        <View style={styles.stepBadge}>
+          <Text style={styles.stepNumber}>{nextStep.number}</Text>
+        </View>
+        <View style={styles.flexOne}>
+          <Text style={styles.stepTitle}>{nextStep.title}</Text>
+          <Text style={styles.stepDetail}>{nextStep.detail}</Text>
+        </View>
+        <AppIcon name="chevron-right" size={22} color={C.primary} />
+      </View>
+      <BrandButton title={nextStep.action} onPress={() => onNavigate(nextStep.route)} />
+
       <SectionTitle right={jobAccepted ? "In progress" : "No active job"}>
         Current delivery
       </SectionTitle>
@@ -130,45 +173,6 @@ export function RiderDashboard({
         )}
       </View>
 
-      <SectionTitle>Quick access</SectionTitle>
-      <View style={styles.shortcuts}>
-        <Shortcut
-          icon="package-variant-closed"
-          title="Job offers"
-          subtitle="See available work"
-          onPress={() => onNavigate("offers")}
-        />
-        <Shortcut
-          icon="wallet-outline"
-          title="Earnings"
-          subtitle="Income summary"
-          onPress={() => onNavigate("earnings")}
-        />
-        <Shortcut
-          icon="bell-outline"
-          title="Notifications"
-          subtitle="Check updates"
-          onPress={() => onNavigate("notifications")}
-        />
-        <Shortcut
-          icon="lifebuoy"
-          title="Support"
-          subtitle="Get help"
-          onPress={() => onNavigate("support")}
-        />
-        <Shortcut
-          icon="shield-check-outline"
-          title="Safety"
-          subtitle="Guidance and incidents"
-          onPress={() => onNavigate("safety")}
-        />
-        <Shortcut
-          icon="cog-outline"
-          title="Settings"
-          subtitle="Your rider preferences"
-          onPress={() => onNavigate("profile")}
-        />
-      </View>
       <Text style={styles.disclaimer}>
         Demo only: availability, orders and earnings are fictional. No live dispatch is connected.
       </Text>
@@ -323,6 +327,25 @@ const styles = createBrandedStyles({
     marginBottom: 6,
   },
   emptyText: { fontSize: 14, color: C.muted, lineHeight: 20, marginBottom: 14 },
-  shortcuts: { flexDirection: "row", flexWrap: "wrap", gap: 10 },
+  stepCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    backgroundColor: C.primarySoft,
+    borderRadius: 18,
+    padding: 14,
+    marginBottom: 10,
+  },
+  stepBadge: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: C.primary,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  stepNumber: { color: C.white, fontFamily: theme.typography.family.bold, fontSize: 16 },
+  stepTitle: { color: C.text, fontFamily: theme.typography.family.bold, fontSize: 16 },
+  stepDetail: { color: C.muted, fontSize: 12, marginTop: 3 },
   disclaimer: { color: C.muted, fontSize: 11, lineHeight: 17, marginTop: 10, marginBottom: 6 },
 });

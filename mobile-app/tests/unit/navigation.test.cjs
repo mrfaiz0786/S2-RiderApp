@@ -5,10 +5,10 @@ const { routes, tabs, getRoute, isRouteName, defaultBackRoute } =
   loadSource("navigation/routes.ts");
 const { navigationReducer: reduce, initialNavigationState: initial } =
   loadSource("navigation/reducer.ts");
-test("all 21 routes have unique names and legacy references", () => {
-  assert.equal(routes.length, 21);
-  assert.equal(new Set(routes.map((r) => r.name)).size, 21);
-  assert.equal(new Set(routes.map((r) => r.legacyId)).size, 21);
+test("all 25 routes have unique names and legacy references", () => {
+  assert.equal(routes.length, 25);
+  assert.equal(new Set(routes.map((r) => r.name)).size, 25);
+  assert.equal(new Set(routes.map((r) => r.legacyId)).size, 25);
 });
 test("four primary tabs remain available", () =>
   assert.deepEqual(
@@ -28,9 +28,13 @@ test("focused delivery screens hide bottom navigation", () => {
   }
 });
 test("payouts belongs to Earnings tab", () => assert.equal(getRoute("payouts").tab, "earnings"));
-test("onboarding follows city then hub then declarations", () => {
+test("onboarding follows the verification flow in order", () => {
   assert.equal(defaultBackRoute("work-hub"), "work-city");
-  assert.equal(defaultBackRoute("declarations"), "work-hub");
+  assert.equal(defaultBackRoute("identity"), "work-hub");
+  assert.equal(defaultBackRoute("document-check"), "identity");
+  assert.equal(defaultBackRoute("selfie-bank"), "document-check");
+  assert.equal(defaultBackRoute("declarations"), "selfie-bank");
+  assert.equal(defaultBackRoute("training"), "verification-status");
 });
 test("unknown routes are rejected", () => {
   assert.equal(isRouteName("admin"), false);

@@ -46,7 +46,7 @@ export function WorkHubView({
         subtitle="Choose a hub preview for your work city. Live openings will need a real operations service."
         icon="storefront-outline"
       />
-      <OnboardingProgress current={4} />
+      <OnboardingProgress current={4} total={10} />
       <View style={styles.areaBar}>
         <View>
           <Text style={styles.smallLabel}>WORK CITY</Text>

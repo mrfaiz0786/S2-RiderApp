@@ -5,6 +5,8 @@ const { onboardingReducer: reduce, initialOnboardingState: initial } = loadSourc
   "features/onboarding/model/reducer.ts",
 );
 const { previewHubs } = loadSource("features/onboarding/data/workAreas.ts");
+const { isAdult } = loadSource("features/onboarding/model/eligibility.ts");
+const { bankSetupIssue } = loadSource("features/onboarding/model/bankValidation.ts");
 const {
   requiredDocuments,
   documentStatus,
@@ -15,8 +17,28 @@ const {
 test("bicycle checklist excludes DL and RC", () =>
   assert.deepEqual(
     requiredDocuments("Bicycle / Cycle").map((d) => d.id),
-    ["aadhaar", "pan"],
+    ["pan"],
   ));
+test("profile age gate accepts only valid adult dates", () => {
+  const today = new Date(2026, 9, 23);
+  assert.equal(isAdult("23/10/2008", today), true);
+  assert.equal(isAdult("24/10/2008", today), false);
+  assert.equal(isAdult("31/02/2000", today), false);
+  assert.equal(isAdult("01/01/2027", today), false);
+});
+test("bank setup explains each missing detail before continuing", () => {
+  const valid = {
+    bankHolder: "Demo Rider",
+    bankAccount: "1234567890",
+    bankIfsc: "SBIN0001234",
+    selfieReady: true,
+  };
+  assert.equal(bankSetupIssue(valid), null);
+  assert.match(bankSetupIssue({ ...valid, bankHolder: "" }), /holder/);
+  assert.match(bankSetupIssue({ ...valid, bankAccount: "123" }), /6–18/);
+  assert.match(bankSetupIssue({ ...valid, bankIfsc: "SBIN123" }), /IFSC/);
+  assert.match(bankSetupIssue({ ...valid, selfieReady: false }), /selfie/);
+});
 test("motorcycle checklist retains its four documents", () =>
   assert.equal(requiredDocuments("Two-Wheeler").length, 4));
 test("changing work city clears incompatible hub", () => {

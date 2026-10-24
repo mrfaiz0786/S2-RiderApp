@@ -50,10 +50,10 @@ export const vehicles: {
   },
 ];
 export const vehicleDocumentIds: Record<string, string[]> = {
-  "Two-Wheeler": ["dl", "aadhaar", "rc", "pan"],
-  "Electric Scooter": ["dl", "aadhaar", "rc", "pan"],
-  "Bicycle / Cycle": ["aadhaar", "pan"],
-  "Auto (demo)": ["dl", "aadhaar", "rc", "pan"],
-  "Car (demo)": ["dl", "aadhaar", "rc", "pan"],
-  "Van / Cargo (demo)": ["dl", "aadhaar", "rc", "pan"],
+  "Two-Wheeler": ["pan", "dl", "rc", "insurance"],
+  "Electric Scooter": ["pan", "dl", "rc", "insurance"],
+  "Bicycle / Cycle": ["pan"],
+  "Auto (demo)": ["pan", "dl", "rc", "insurance"],
+  "Car (demo)": ["pan", "dl", "rc", "insurance"],
+  "Van / Cargo (demo)": ["pan", "dl", "rc", "insurance"],
 };

@@ -4,22 +4,22 @@ import { createBrandedStyles } from "@/shared/theme/createBrandedStyles";
 import { AppIcon } from "@/shared/ui/AppIcon";
 import { BrandMark } from "@/shared/ui/BrandMark";
 import { Text, TouchableOpacity, View } from "react-native";
-export function AppHeader({ onOpenPreview }: { onOpenPreview: () => void }) {
+export function AppHeader() {
   const { route, current, navigate, goBack } = useNavigation();
   if (route === "welcome") return null;
   const action = current.focusedDelivery
     ? () => navigate("safety")
     : current.showTabs
       ? () => navigate("notifications")
-      : onOpenPreview;
+      : undefined;
   const label = current.focusedDelivery
     ? "Safety and assistance"
     : current.showTabs
       ? "Notifications"
-      : "Open demo screen index";
+      : "";
   return (
     <View style={styles.bar}>
-      {route === "home" ? (
+      {current.tab === route ? (
         <View style={styles.back}>
           <BrandMark size={34} />
         </View>
@@ -37,24 +37,28 @@ export function AppHeader({ onOpenPreview }: { onOpenPreview: () => void }) {
         <Text style={styles.title}>{current.title}</Text>
         <Text style={styles.subtitle}>BUILD YOUR MART</Text>
       </View>
-      <TouchableOpacity
-        accessibilityRole="button"
-        accessibilityLabel={label}
-        onPress={action}
-        style={styles.action}
-      >
-        <AppIcon
-          name={
-            current.focusedDelivery
-              ? "shield-check-outline"
-              : current.showTabs
-                ? "bell-outline"
-                : "dots-horizontal"
-          }
-          size={22}
-          color={theme.colors.primary}
-        />
-      </TouchableOpacity>
+      {action ? (
+        <TouchableOpacity
+          accessibilityRole="button"
+          accessibilityLabel={label}
+          onPress={action}
+          style={styles.action}
+        >
+          <AppIcon
+            name={
+              current.focusedDelivery
+                ? "shield-check-outline"
+                : current.showTabs
+                  ? "bell-outline"
+                  : "dots-horizontal"
+            }
+            size={22}
+            color={theme.colors.primary}
+          />
+        </TouchableOpacity>
+      ) : (
+        <View style={styles.actionPlaceholder} />
+      )}
     </View>
   );
 }
@@ -82,4 +86,5 @@ const styles = createBrandedStyles({
     alignItems: "center",
     justifyContent: "center",
   },
+  actionPlaceholder: { width: 46, height: 48 },
 });

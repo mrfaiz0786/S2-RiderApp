@@ -10,6 +10,7 @@ import { BrandButton as Button } from "@/shared/ui/BrandButton";
 import { BrandedAlert as Alert } from "@/shared/ui/BrandDialog";
 import { Card } from "@/shared/ui/Card";
 import { Field } from "@/shared/ui/Field";
+import { OnboardingProgress } from "@/shared/ui/OnboardingProgress";
 import { ScreenHero } from "@/shared/ui/ScreenHero";
 import { useState } from "react";
 import { Text } from "react-native";
@@ -31,6 +32,7 @@ export function OtpScreen() {
         icon="shield-check-outline"
         compact
       />
+      <OnboardingProgress current={1} total={10} />
       <Card>
         <Text style={styles.cardTitle}>Check your code</Text>
         <Text style={styles.bodyMuted}>
@@ -38,6 +40,7 @@ export function OtpScreen() {
         </Text>
         <Field
           label="One-time password"
+          required
           value={otp}
           onChangeText={(s) => setOtp(s.replace(/[^0-9]/g, "").slice(0, 6))}
           placeholder="Enter 6-digit code"
@@ -76,14 +79,6 @@ export function OtpScreen() {
           Never share an OTP with anyone. Real SMS delivery is not connected.
         </Text>
       </Card>
-      <Button
-        title="← Edit phone number"
-        secondary
-        onPress={() => {
-          setOtp("");
-          go("welcome");
-        }}
-      />
     </>
   );
 }

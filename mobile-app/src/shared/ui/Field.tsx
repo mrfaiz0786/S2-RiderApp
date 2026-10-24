@@ -8,6 +8,7 @@ export function Field({
   placeholder,
   keyboardType,
   maxLength,
+  required = false,
 }: {
   label: string;
   value: string;
@@ -15,10 +16,14 @@ export function Field({
   placeholder?: string;
   keyboardType?: "default" | "phone-pad" | "email-address" | "number-pad";
   maxLength?: number;
+  required?: boolean;
 }) {
   return (
     <View style={styles.fieldWrap}>
-      <Text style={styles.fieldLabel}>{label}</Text>
+      <Text style={styles.fieldLabel}>
+        {label}
+        {required ? <Text style={styles.required}> *</Text> : null}
+      </Text>
       <TextInput
         accessibilityLabel={label}
         value={value}
@@ -42,6 +47,7 @@ const styles = createBrandedStyles({
     color: theme.colors.textSecondary,
     marginBottom: 7,
   },
+  required: { color: theme.colors.danger },
   input: {
     minHeight: 54,
     borderRadius: 15,

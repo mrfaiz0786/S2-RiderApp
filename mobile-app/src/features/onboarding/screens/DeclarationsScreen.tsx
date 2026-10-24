@@ -5,7 +5,6 @@ import { useFeedback } from "@/shared/state/FeedbackProvider";
 import { theme } from "@/shared/theme";
 import { createBrandedStyles } from "@/shared/theme/createBrandedStyles";
 import { C } from "@/shared/theme/screenPalette";
-import { AppIcon } from "@/shared/ui/AppIcon";
 import { BrandButton as Button } from "@/shared/ui/BrandButton";
 import { BrandedAlert as Alert } from "@/shared/ui/BrandDialog";
 import { Card } from "@/shared/ui/Card";
@@ -23,23 +22,17 @@ export function DeclarationsScreen() {
   return (
     <>
       <ScreenHero
-        eyebrow={"FINAL STEP · DECLARATIONS"}
+        eyebrow={"STEP 8 · CONSENT"}
         title={"Confirm your details"}
         subtitle={"Review your information and confirm both statements."}
         icon="file-document-outline"
         compact
       />
-      <OnboardingProgress current={5} />
+      <OnboardingProgress current={8} total={10} />
       <Card>
-        <View style={styles.declarationHeader}>
-          <View style={styles.declarationIcon}>
-            <AppIcon name="file-document-outline" size={24} color={C.blue} />
-          </View>
-          <View style={styles.flexOne}>
-            <Text style={styles.cardTitle}>Information accuracy</Text>
-            <Text style={styles.bodyMuted}>Your responsibility as a rider applicant</Text>
-          </View>
-        </View>
+        <Text style={styles.cardTitle}>
+          Information accuracy <Text style={styles.required}>*</Text>
+        </Text>
         <TouchableOpacity
           accessibilityRole="checkbox"
           accessibilityState={{ checked: dataAccuracyAccepted }}
@@ -50,22 +43,13 @@ export function DeclarationsScreen() {
             {dataAccuracyAccepted ? <Text style={styles.checkMark}>✓</Text> : null}
           </View>
           <Text style={styles.declarationText}>
-            I confirm that all information, personal details, vehicle details, documents and other
-            data I have provided are true, accurate, complete and correct to the best of my
-            knowledge.
+            I confirm that the personal, vehicle and document details I provided are accurate.
           </Text>
         </TouchableOpacity>
-      </Card>
-      <Card>
-        <View style={styles.declarationHeader}>
-          <View style={[styles.declarationIcon, { backgroundColor: C.paleGreen }]}>
-            <AppIcon name="shield-check-outline" size={24} color={C.green} />
-          </View>
-          <View style={styles.flexOne}>
-            <Text style={styles.cardTitle}>Terms & conditions</Text>
-            <Text style={styles.bodyMuted}>Agreement to the applicable terms</Text>
-          </View>
-        </View>
+        <View style={styles.divider} />
+        <Text style={styles.cardTitle}>
+          Terms & conditions <Text style={styles.required}>*</Text>
+        </Text>
         <TouchableOpacity
           accessibilityRole="checkbox"
           accessibilityState={{ checked: termsAccepted }}
@@ -76,18 +60,30 @@ export function DeclarationsScreen() {
             {termsAccepted ? <Text style={styles.checkMark}>✓</Text> : null}
           </View>
           <Text style={styles.declarationText}>
-            I have read and agree to the applicable Terms and Conditions and understand that my
-            application and documents may be reviewed by Build Your Mart.
+            I agree to the Terms and Conditions for this rider application.
           </Text>
         </TouchableOpacity>
-        <Text style={styles.helper}>
-          A production release should link this statement to the current, approved Terms and
-          Conditions and record the accepted version and timestamp.
+        <View style={styles.divider} />
+        <Text style={styles.cardTitle}>
+          Verification consent <Text style={styles.required}>*</Text>
         </Text>
+        <TouchableOpacity
+          accessibilityRole="checkbox"
+          accessibilityState={{ checked: onboarding.verificationConsent }}
+          onPress={() => onboarding.setFlag("verificationConsent", !onboarding.verificationConsent)}
+          style={styles.declarationRow}
+        >
+          <View style={[styles.checkBox, onboarding.verificationConsent && styles.checkBoxChecked]}>
+            {onboarding.verificationConsent ? <Text style={styles.checkMark}>✓</Text> : null}
+          </View>
+          <Text style={styles.declarationText}>
+            I agree to the stated document and background review for my rider application.
+          </Text>
+        </TouchableOpacity>
       </Card>
       <Button
         title="Submit for review →"
-        disabled={!canSubmit}
+        disabled={!canSubmit || !onboarding.verificationConsent}
         onPress={() => {
           if (!canSubmit) {
             Alert.alert(
@@ -99,17 +95,11 @@ export function DeclarationsScreen() {
           setDemoNotice(
             "Both declarations accepted in this demo session. No information was sent to a server.",
           );
+          onboarding.setFlag("reviewSubmitted", true);
           go("verification-status");
         }}
       />
-      <Button title="Back to starting hub" secondary onPress={() => go("work-hub")} />
-      {!dataAccuracyAccepted || !termsAccepted ? (
-        <Text style={styles.helper}>Both checkboxes are required to continue.</Text>
-      ) : null}
-      <Text style={styles.helper}>
-        Demo prototype: these confirmations are held only in the current app session and are not a
-        legally recorded consent or server submission.
-      </Text>
+      <Text style={styles.helper}>Demo only: no information is sent for real verification.</Text>
     </>
   );
 }
@@ -131,6 +121,8 @@ const styles = createBrandedStyles({
     color: C.ink,
     marginBottom: 2,
   },
+  required: { color: theme.colors.danger },
+  divider: { height: 1, backgroundColor: C.line, marginVertical: 9 },
   bodyMuted: {
     fontFamily: theme.typography.family.regular,
     fontSize: 13,

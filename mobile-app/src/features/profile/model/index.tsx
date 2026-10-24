@@ -9,6 +9,7 @@ export function useProfile() {
     ...state,
     setName: (value: string) => dispatch({ type: "nameChanged", value }),
     setEmail: (value: string) => dispatch({ type: "emailChanged", value }),
+    setDateOfBirth: (value: string) => dispatch({ type: "dateOfBirthChanged", value }),
     setLanguage: (value: Language) => dispatch({ type: "languageChanged", value }),
   };
 }

@@ -19,6 +19,19 @@ export function useOnboarding() {
     setDigilocker: (value: BooleanUpdate) => dispatch({ type: "digitalPreviewed", value }),
     setDataAccuracyAccepted: (value: BooleanUpdate) => dispatch({ type: "accuracyChanged", value }),
     setTermsAccepted: (value: BooleanUpdate) => dispatch({ type: "termsChanged", value }),
+    setField: (
+      field: "identityMethod" | "address" | "bankHolder" | "bankAccount" | "bankIfsc",
+      value: string,
+    ) => dispatch({ type: "fieldChanged", field, value }),
+    setFlag: (
+      field:
+        | "identityConsent"
+        | "selfieReady"
+        | "verificationConsent"
+        | "reviewSubmitted"
+        | "trainingCompleted",
+      value: boolean,
+    ) => dispatch({ type: "flagChanged", field, value }),
     docStatus: (id: string) => documentStatus(state, id),
     docTone: documentTone,
   };

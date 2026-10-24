@@ -10,8 +10,9 @@ export function OnboardingActionDock() {
     case "vehicle-documents":
       return (
         <BrandActionDock
-          title="Choose your work city"
-          caption="Vehicle and documents are a local preview"
+          title="Next: choose work city"
+          caption="Select your vehicle to continue"
+          disabled={!state.vehicle}
           onPress={() => navigate("work-city")}
         />
       );
@@ -31,14 +32,14 @@ export function OnboardingActionDock() {
     case "work-hub":
       return (
         <BrandActionDock
-          title="Continue to declarations"
+          title="Next: identity & address"
           caption={
             state.workHub
               ? "Sample hub selected; no real assignment"
               : "Choose a sample hub to continue"
           }
           disabled={!canContinueFromHub(state)}
-          onPress={() => navigate("declarations")}
+          onPress={() => navigate("identity")}
         />
       );
     default:

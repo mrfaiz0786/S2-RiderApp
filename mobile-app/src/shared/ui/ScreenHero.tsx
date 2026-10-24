@@ -34,17 +34,17 @@ export function ScreenHero({
             {title}
           </Text>
         </View>
-        <View style={styles.iconTile}>
+        <View style={[styles.iconTile, compact && styles.iconTileCompact]}>
           <AppIcon name={icon} size={25} color={accent} />
         </View>
       </View>
-      <Text style={styles.subtitle}>{subtitle}</Text>
+      <Text style={[styles.subtitle, compact && styles.subtitleCompact]}>{subtitle}</Text>
     </View>
   );
 }
 const styles = createBrandedStyles({
   hero: { paddingTop: 8, paddingBottom: 12, marginBottom: 12 },
-  compact: { paddingTop: 3, paddingBottom: 6 },
+  compact: { paddingTop: 2, paddingBottom: 4, marginBottom: 7 },
   headingRow: { flexDirection: "row", alignItems: "flex-start", gap: 14 },
   heading: { flex: 1, minWidth: 0 },
   eyebrowRow: { flexDirection: "row", alignItems: "center", gap: 7, marginBottom: 10 },
@@ -61,5 +61,7 @@ const styles = createBrandedStyles({
     justifyContent: "center",
     marginTop: 15,
   },
+  iconTileCompact: { width: 40, height: 40, borderRadius: 13, marginTop: 8 },
   subtitle: { color: C.textSecondary, fontSize: 14, lineHeight: 21, marginTop: 10 },
+  subtitleCompact: { fontSize: 13, lineHeight: 18, marginTop: 5 },
 });

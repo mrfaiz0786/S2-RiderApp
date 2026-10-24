@@ -41,7 +41,7 @@ export function WorkCityView({
         subtitle="Pick a work city first. Your starting hub comes next."
         icon="map-marker-outline"
       />
-      <OnboardingProgress current={3} />
+      <OnboardingProgress current={4} total={10} />
       <SearchField
         label="Search work cities"
         placeholder="Search by city name"

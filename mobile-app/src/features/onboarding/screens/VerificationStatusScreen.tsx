@@ -1,6 +1,6 @@
 import { sampleDocuments } from "@/features/onboarding/data/fixtures";
 import { vehicleDocumentIds } from "@/features/onboarding/data/vehicles";
-import { previewHubs, workCityName } from "@/features/onboarding/data/workAreas";
+import { workCityName } from "@/features/onboarding/data/workAreas";
 import { useOnboarding } from "@/features/onboarding/model";
 import { useProfile } from "@/features/profile/model";
 import { useNavigation } from "@/navigation/NavigationProvider";
@@ -13,13 +13,16 @@ import { Card } from "@/shared/ui/Card";
 import { OnboardingProgress } from "@/shared/ui/OnboardingProgress";
 import { Row } from "@/shared/ui/Row";
 import { ScreenHero } from "@/shared/ui/ScreenHero";
-import { Section } from "@/shared/ui/Section";
 import { Tag } from "@/shared/ui/Tag";
 import { Text, View } from "react-native";
 
 export function VerificationStatusScreen() {
   const { name } = useProfile();
-  const { vehicle, workCity, workHub, docStatus, docTone } = useOnboarding();
+  const { vehicle, workCity, bankHolder, reviewSubmitted, docStatus } = useOnboarding();
+  const documentIds = vehicleDocumentIds[vehicle] || vehicleDocumentIds["Two-Wheeler"];
+  const markedDocuments = sampleDocuments.filter(
+    (item) => documentIds.includes(item.id) && docStatus(item.id) === "Pending review",
+  ).length;
   const { navigate: go } = useNavigation();
   return (
     <>
@@ -30,7 +33,7 @@ export function VerificationStatusScreen() {
         icon="clock-outline"
         compact
       />
-      <OnboardingProgress current={6} />
+      <OnboardingProgress current={9} total={10} />
       <Card>
         <View style={styles.statusHero}>
           <AppIcon name="clock-outline" size={28} color={C.amber} />
@@ -38,49 +41,21 @@ export function VerificationStatusScreen() {
           <Tag label="Manual review" tone="amber" />
         </View>
         <Text style={styles.bodyMuted}>
-          This is a local preview of the review queue. No reviewer or verification service is
-          connected, and this screen does not approve your account.
+          Your demo details are marked for review. No real reviewer or verification service is
+          connected.
         </Text>
-      </Card>
-      <Section title="Verification checklist">
-        <Card>
-          <Row
-            label="Rider profile"
-            value={name.trim() ? "Details added" : "Incomplete"}
-            tone={name.trim() ? "green" : "amber"}
-          />
-          <Row label="Selected vehicle" value={vehicle} />
-          <Row label="Work city (preview)" value={workCityName(workCity)} />
-          <Row
-            label="Starting hub (preview)"
-            value={previewHubs(workCity).find((h) => h.id === workHub)?.name || "Not selected"}
-          />
-          {sampleDocuments
-            .filter((d) =>
-              (vehicleDocumentIds[vehicle] || vehicleDocumentIds["Two-Wheeler"]).includes(d.id),
-            )
-            .map((d) => (
-              <Row
-                key={d.id}
-                label={d.name}
-                value={docStatus(d.id)}
-                tone={docTone(docStatus(d.id))}
-              />
-            ))}
-          <Row label="Payout setup" value="Not started" tone="grey" />
-        </Card>
-      </Section>
-      <Card>
-        <Text style={styles.cardTitle}>What happens next?</Text>
-        <Text style={styles.bodyMuted}>
-          In production, Build Your Mart must validate each required document and vehicle
-          eligibility before enabling rider availability. The demo cannot perform these checks.
-        </Text>
-        <Button title="Continue to demo home →" onPress={() => go("home")} />
+        <Row label="Profile" value={name.trim() ? "Added" : "Incomplete"} />
+        <Row label="Vehicle / city" value={`${vehicle} · ${workCityName(workCity)}`} />
+        <Row label="Documents" value={`${markedDocuments}/${documentIds.length} marked`} />
+        <Row label="Payout details" value={bankHolder ? "Added (demo)" : "Missing"} />
+        <Button
+          title="Preview demo training →"
+          disabled={!reviewSubmitted}
+          onPress={() => go("training")}
+        />
       </Card>
       <Text style={styles.helper}>
-        Demo only: reaching the home screen does not mean your rider account is approved for real
-        deliveries.
+        Real orders require document approval, background clearance and training.
       </Text>
     </>
   );

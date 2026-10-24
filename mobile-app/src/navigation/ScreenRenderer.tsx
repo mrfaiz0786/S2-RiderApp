@@ -16,6 +16,12 @@ import { VehicleDocumentsScreen } from "@/features/onboarding/screens/VehicleDoc
 import { VerificationStatusScreen } from "@/features/onboarding/screens/VerificationStatusScreen";
 import { WorkCityScreen } from "@/features/onboarding/screens/WorkCityScreen";
 import { WorkHubScreen } from "@/features/onboarding/screens/WorkHubScreen";
+import {
+  IdentityScreen,
+  DocumentCheckScreen,
+  SelfieBankScreen,
+  TrainingScreen,
+} from "@/features/onboarding/screens/VerificationSteps";
 import { ProfileScreen } from "@/features/profile/screens/ProfileScreen";
 import { SafetyScreen } from "@/features/safety/screens/SafetyScreen";
 import { SupportScreen } from "@/features/support/screens/SupportScreen";
@@ -29,8 +35,12 @@ export const screenRegistry: Record<RouteName, ComponentType> = {
   "vehicle-documents": VehicleDocumentsScreen,
   "work-city": WorkCityScreen,
   "work-hub": WorkHubScreen,
+  identity: IdentityScreen,
+  "document-check": DocumentCheckScreen,
+  "selfie-bank": SelfieBankScreen,
   declarations: DeclarationsScreen,
   "verification-status": VerificationStatusScreen,
+  training: TrainingScreen,
   home: HomeScreen,
   offers: OffersScreen,
   "active-job": ActiveJobScreen,

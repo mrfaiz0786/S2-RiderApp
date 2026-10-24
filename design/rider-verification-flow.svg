@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1780" viewBox="0 0 1200 1780">
+  <defs>
+    <style>
+      text{font-family:Arial,Helvetica,sans-serif;fill:#183638} .title{font-size:53px;font-weight:800}.sub{font-size:25px;fill:#587072}.phase{font-size:24px;font-weight:800;letter-spacing:2px}.num{font-size:25px;font-weight:800;fill:white}.cardtitle{font-size:27px;font-weight:800}.detail{font-size:21px;fill:#52696a}.note{font-size:20px;fill:#52696a}.small{font-size:18px;fill:#52696a}
+    </style>
+    <filter id="shadow"><feDropShadow dx="0" dy="4" stdDeviation="9" flood-color="#123536" flood-opacity="0.09"/></filter>
+  </defs>
+  <rect width="1200" height="1780" fill="#F7F8F4"/>
+  <rect width="1200" height="188" fill="#084E4D"/>
+  <text x="70" y="80" class="title" fill="white" style="fill:white">Rider Verification Flow</text>
+  <text x="70" y="127" class="sub" style="fill:#DCEDE6">Registration se approval aur rider Home tak</text>
+  <rect x="70" y="154" width="222" height="7" rx="3" fill="#FF9D24"/>
+
+  <text x="70" y="235" class="phase" fill="#0B5751" style="fill:#0B5751">01  ACCOUNT &amp; ELIGIBILITY</text>
+  <path d="M108 285 V1505" stroke="#A9C8BD" stroke-width="6" stroke-linecap="round"/>
+
+  <g filter="url(#shadow)"><rect x="146" y="260" width="984" height="98" rx="20" fill="white"/></g>
+  <circle cx="108" cy="309" r="31" fill="#0B6860"/><text x="99" y="318" class="num">1</text>
+  <text x="176" y="301" class="cardtitle">Get started + Mobile OTP</text><text x="176" y="332" class="detail">Phone number verify karein</text>
+
+  <g filter="url(#shadow)"><rect x="146" y="375" width="984" height="98" rx="20" fill="white"/></g>
+  <circle cx="108" cy="424" r="31" fill="#0B6860"/><text x="99" y="433" class="num">2</text>
+  <text x="176" y="416" class="cardtitle">Rider profile + 18+ check</text><text x="176" y="447" class="detail">Name, date of birth, contact details</text>
+
+  <text x="70" y="525" class="phase" style="fill:#0B5751">02  WORK PREFERENCE</text>
+  <g filter="url(#shadow)"><rect x="146" y="550" width="984" height="98" rx="20" fill="white"/></g>
+  <circle cx="108" cy="599" r="31" fill="#0B6860"/><text x="99" y="608" class="num">3</text>
+  <text x="176" y="591" class="cardtitle">Select vehicle</text><text x="176" y="622" class="detail">Cycle / motorcycle / scooter; documents adapt to choice</text>
+
+  <g filter="url(#shadow)"><rect x="146" y="665" width="984" height="98" rx="20" fill="white"/></g>
+  <circle cx="108" cy="714" r="31" fill="#0B6860"/><text x="99" y="723" class="num">4</text>
+  <text x="176" y="706" class="cardtitle">Select city + starting store</text><text x="176" y="737" class="detail">Available city aur pickup hub/store choose karein</text>
+
+  <text x="70" y="815" class="phase" style="fill:#0B5751">03  IDENTITY &amp; DOCUMENTS</text>
+  <g filter="url(#shadow)"><rect x="146" y="840" width="984" height="108" rx="20" fill="white"/></g>
+  <circle cx="108" cy="894" r="31" fill="#0B6860"/><text x="99" y="903" class="num">5</text>
+  <text x="176" y="880" class="cardtitle">Identity + address proof</text><text x="176" y="912" class="detail">Aadhaar option with consent; alternative ID bhi dein</text><text x="176" y="937" class="small">Aadhaar copy use ho to first 8 digits mask karein</text>
+
+  <g filter="url(#shadow)"><rect x="146" y="965" width="984" height="105" rx="20" fill="white"/></g>
+  <circle cx="108" cy="1017" r="31" fill="#0B6860"/><text x="99" y="1026" class="num">6</text>
+  <text x="176" y="1004" class="cardtitle">PAN + vehicle documents</text><text x="176" y="1037" class="detail">Motor vehicle: DL, RC, insurance; cycle: applicable docs only</text>
+
+  <g filter="url(#shadow)"><rect x="146" y="1087" width="984" height="98" rx="20" fill="white"/></g>
+  <circle cx="108" cy="1136" r="31" fill="#0B6860"/><text x="99" y="1145" class="num">7</text>
+  <text x="176" y="1128" class="cardtitle">Selfie + bank details</text><text x="176" y="1159" class="detail">Face check; account holder, account number, IFSC</text>
+
+  <text x="70" y="1235" class="phase" style="fill:#0B5751">04  CONSENT, REVIEW &amp; ACTIVATION</text>
+  <g filter="url(#shadow)"><rect x="146" y="1260" width="984" height="98" rx="20" fill="white"/></g>
+  <circle cx="108" cy="1309" r="31" fill="#0B6860"/><text x="99" y="1318" class="num">8</text>
+  <text x="176" y="1301" class="cardtitle">Terms + verification consent</text><text x="176" y="1332" class="detail">Separate, clear consent; submit for review</text>
+
+  <g filter="url(#shadow)"><rect x="146" y="1375" width="984" height="98" rx="20" fill="white"/></g>
+  <circle cx="108" cy="1424" r="31" fill="#0B6860"/><text x="99" y="1433" class="num">9</text>
+  <text x="176" y="1416" class="cardtitle">Document + background review</text><text x="176" y="1447" class="detail">Pending / approved / correction needed; resubmit option</text>
+
+  <g filter="url(#shadow)"><rect x="146" y="1490" width="984" height="98" rx="20" fill="#E6F2E8"/></g>
+  <circle cx="108" cy="1539" r="31" fill="#21805B"/><text x="92" y="1548" class="num">10</text>
+  <text x="176" y="1531" class="cardtitle">Training complete → Rider Home</text><text x="176" y="1562" class="detail">Approved rider: Home | Earnings | History | Profile</text>
+
+  <rect x="70" y="1630" width="1060" height="106" rx="17" fill="#FFF0DB"/>
+  <text x="96" y="1669" class="cardtitle" style="font-size:23px">Activation gate</text>
+  <text x="96" y="1702" class="note">Orders tabhi milen jab documents, background check aur training clear hon.</text>
+</svg>

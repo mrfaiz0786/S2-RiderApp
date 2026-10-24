@@ -23,6 +23,7 @@ export function VehicleSetupView({
   getStatus,
   onSimulateUpload,
   onPreviewDigital,
+  showDocuments = true,
 }: {
   vehicle: string;
   onVehicleChange: (v: string) => void;
@@ -30,6 +31,7 @@ export function VehicleSetupView({
   getStatus: (id: string) => string;
   onSimulateUpload: (id: string) => void;
   onPreviewDigital: () => void;
+  showDocuments?: boolean;
 }) {
   const [more, setMore] = useState(false);
   const [document, setDocument] = useState<DocumentItem | null>(null);
@@ -45,7 +47,7 @@ export function VehicleSetupView({
         subtitle="Choose the vehicle you plan to use. We will keep your document checklist relevant."
         icon="bike"
       />
-      <OnboardingProgress current={2} />
+      <OnboardingProgress current={3} total={10} />
       <View
         accessibilityRole="radiogroup"
         accessibilityLabel="Vehicle category"
@@ -88,53 +90,59 @@ export function VehicleSetupView({
         </Text>
         <AppIcon name={more ? "chevron-up" : "chevron-down"} color={C.primary} size={21} />
       </Pressable>
-      <View style={styles.sectionHeading}>
-        <Text style={styles.sectionTitle}>A few details for review</Text>
-        <Text style={styles.smallLabel}>DEMO CHECKLIST</Text>
-      </View>
-      <Text style={styles.body}>
-        Requirements below are illustrative. Actual eligibility depends on your launch location and
-        approved policy.
-      </Text>
-      <View style={styles.documentList}>
-        {documents.map((d) => (
+      {showDocuments ? (
+        <>
+          <View style={styles.sectionHeading}>
+            <Text style={styles.sectionTitle}>A few details for review</Text>
+            <Text style={styles.smallLabel}>DEMO CHECKLIST</Text>
+          </View>
+          <Text style={styles.body}>
+            Requirements below are illustrative. Actual eligibility depends on your launch location
+            and approved policy.
+          </Text>
+          <View style={styles.documentList}>
+            {documents.map((d) => (
+              <Pressable
+                key={d.id}
+                accessibilityRole="button"
+                accessibilityLabel={d.name + ", " + getStatus(d.id) + ", view upload preview"}
+                onPress={() => setDocument(d)}
+                style={styles.documentRow}
+              >
+                <View style={styles.documentIcon}>
+                  <AppIcon
+                    name={d.id === "aadhaar" ? "shield-check-outline" : "file-document-outline"}
+                    size={24}
+                    color={C.primary}
+                  />
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.documentTitle}>{d.name}</Text>
+                  <Text style={styles.documentStatus}>{getStatus(d.id)}</Text>
+                </View>
+                <AppIcon name="chevron-right" size={22} color={C.muted} />
+              </Pressable>
+            ))}
+          </View>
           <Pressable
-            key={d.id}
             accessibilityRole="button"
-            accessibilityLabel={d.name + ", " + getStatus(d.id) + ", view upload preview"}
-            onPress={() => setDocument(d)}
-            style={styles.documentRow}
+            onPress={() => setDigital(true)}
+            style={styles.digitalCard}
           >
-            <View style={styles.documentIcon}>
-              <AppIcon
-                name={d.id === "aadhaar" ? "shield-check-outline" : "file-document-outline"}
-                size={24}
-                color={C.primary}
-              />
+            <View style={styles.digitalIcon}>
+              <AppIcon name="shield-check-outline" size={25} color={C.primary} />
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={styles.documentTitle}>{d.name}</Text>
-              <Text style={styles.documentStatus}>{getStatus(d.id)}</Text>
+              <Text style={styles.documentTitle}>A guided digital check</Text>
+              <Text style={styles.bodySmall}>
+                Preview how consent-based verification could work.
+              </Text>
             </View>
-            <AppIcon name="chevron-right" size={22} color={C.muted} />
+            <AppIcon name="arrow-right" size={21} color={C.primary} />
           </Pressable>
-        ))}
-      </View>
-      <Pressable
-        accessibilityRole="button"
-        onPress={() => setDigital(true)}
-        style={styles.digitalCard}
-      >
-        <View style={styles.digitalIcon}>
-          <AppIcon name="shield-check-outline" size={25} color={C.primary} />
-        </View>
-        <View style={{ flex: 1 }}>
-          <Text style={styles.documentTitle}>A guided digital check</Text>
-          <Text style={styles.bodySmall}>Preview how consent-based verification could work.</Text>
-        </View>
-        <AppIcon name="arrow-right" size={21} color={C.primary} />
-      </Pressable>
-      {notice ? <BrandNote title="Preview updated" body={notice} /> : null}
+          {notice ? <BrandNote title="Preview updated" body={notice} /> : null}
+        </>
+      ) : null}
       <BrandSheet
         visible={!!document}
         title={

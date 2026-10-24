@@ -90,7 +90,7 @@ function checkCycle(file, chain = []) {
 }
 for (const file of files) checkCycle(file);
 const screenCount = files.filter((file) => rel(file).includes("/screens/")).length;
-if (screenCount !== 21) errors.push("Expected all 21 extracted screens; found " + screenCount);
+if (screenCount !== 22) errors.push("Expected all 22 screen modules; found " + screenCount);
 const entry = fs.readFileSync(path.join(root, "App.tsx"), "utf8");
 if (entry.split("\n").length > 10)
   errors.push("App.tsx should remain a small bootstrap entry point.");

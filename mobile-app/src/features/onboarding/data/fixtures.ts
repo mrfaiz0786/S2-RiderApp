@@ -14,4 +14,10 @@ export const sampleDocuments = [
     status: "Pending review",
   },
   { id: "pan", name: "PAN Card", detail: "Required where applicable", status: "Upload required" },
+  {
+    id: "insurance",
+    name: "Vehicle insurance",
+    detail: "Valid policy for motor vehicle",
+    status: "Upload required",
+  },
 ];

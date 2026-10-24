@@ -12,7 +12,7 @@ Android-first Expo / React Native / TypeScript rider prototype, with the owner's
 - Behavior and integration limits: [docs/architecture/integration-boundaries.md](docs/architecture/integration-boundaries.md)
 - Regression checklist: [docs/architecture/refactor-validation.md](docs/architecture/refactor-validation.md)
 
-The mobile application now has 21 individually owned route screens. Backend, real OTP, identity verification, dispatch, GPS, push, support, emergency handling and payouts are not connected. Do not enter real identity or payment details.
+The mobile application now has 25 routes across 22 screen modules. Rider onboarding follows mobile OTP, profile and age, vehicle, city and hub, identity and address, PAN and vehicle documents, selfie and bank details, declarations, review, and training before the demo Home. Each step must be completed before its next button becomes available. Backend, real OTP, identity verification, dispatch, GPS, push, support, emergency handling and payouts are not connected. Use fictional identity and payment details only.
 
 ## Workspace
 
