@@ -1,0 +1,16 @@
+node_modules/
+dist/
+coverage/
+.expo*/
+.theme-backup*/
+.mcp-backups/
+archive/
+.env
+.env.*
+!.env.example
+*.log
+*.keystore
+*.jks
+*.p12
+google-services.json
+GoogleService-Info.plist

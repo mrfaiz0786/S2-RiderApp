@@ -1,79 +1,32 @@
-# 6. Architecture and Data Model (Proposal)
+# 6. Mobile-client architecture and API data boundaries
 
-This is a starting design proposal, not an implementation or a claim about the current codebase. Confirm the selected stack and database before building migrations.
+This repository is the Expo / React Native rider client only. Backend frameworks, databases, cloud functions and provider integrations belong to the separate backend team.
 
-## 6.1 Suggested service boundaries
+## Source dependency direction
 
-- Authentication and sessions.
-- Rider profiles, vehicles, and eligibility.
-- Document storage and review workflow.
-- Job/dispatch lifecycle.
-- Location ingestion and freshness monitoring.
-- Pickup/delivery verification and proof-of-delivery metadata.
-- Earnings ledger, COD reconciliation, and payouts.
-- Support cases, disputes, and appeals.
-- Admin operations and audit events.
-- Notifications and monitoring.
+`App entry -> app composition -> navigation + feature UI -> feature model/adapter -> services + shared UI`.
 
-These can initially live in a modular backend rather than separate microservices. Split services only when operational needs justify it.
+`shared` never imports feature or app composition. Services never import presentation. Network code stays in `src/services/api`; screens should depend on feature adapters that decode API responses and map them to view models. Existing sample-data modules remain explicitly mock-only.
 
-## 6.2 Core entities
+## Data ownership
 
-| Entity | Key fields / purpose |
-|---|---|
-| `riders` | ID, user ID, profile status, language, eligibility status, created/updated timestamps. |
-| `rider_documents` | Rider ID, document type, secure object reference, status, expiry, review reason, reviewer, timestamps. |
-| `vehicles` | Vehicle ID, category, registration reference, owner relationship, document status, active status. |
-| `rider_vehicle_assignments` | Rider ID, vehicle ID, valid-from/to, verification status. |
-| `jobs` | Job ID, type, customer/sender references, pickup/drop data, current state, assigned rider, timestamps. |
-| `job_events` | Job ID, event type, actor, server timestamp, reason, idempotency key, safe metadata. Append-only for critical transitions. |
-| `job_verifications` | Job ID, verification type, success/failure, attempt count, timestamp. Never store raw OTP in logs. |
-| `proof_of_delivery` | Job ID, protected object reference, captured time, location metadata where appropriate, retention status. |
-| `location_events` | Rider/job reference, coordinates, accuracy, captured/server time, source/quality flags, retention policy. |
-| `earnings_ledger` | Rider ID, job ID, entry type, amount, currency, reference, immutable creation time. |
-| `payouts` | Rider ID, amount, status, provider reference, timestamps, failure reason. |
-| `support_cases` | Case ID, job/rider/customer references, category, status, owner, resolution, timestamps. |
-| `fraud_flags` | Job/rider reference, rule, signal evidence references, severity, review status, reviewer decision. A flag is not a conviction. |
-| `audit_events` | Actor, action, entity, timestamp, reason, correlation ID, safe before/after metadata. |
+| Data | Authority | Mobile storage/lifetime |
+|---|---|---|
+| Profile and onboarding status | Backend | Feature cache and drafts; synchronize after login |
+| Access/refresh credentials | Backend-issued | Native secure storage adapter; never ordinary localStorage or public env |
+| Delivery assignment/status | Backend | Refetched on resume; local optimistic UI cannot override server |
+| Earnings, COD and payouts | Backend ledger | Read-only view models with currency/minor units |
+| OTP and delivery PIN input | Backend verification | Screen-local only; clear on exit/submission; no logs |
+| Documents/proof images | Backend-authorized private storage | Temporary local files until upload confirmation; retention policy required |
+| Location samples | Device capture, backend validates | Bounded consented queue only after persistence/expiry is implemented |
+| Push events | Untrusted delivery hints | Deduplicate and refetch authoritative resources |
 
-## 6.3 Backend invariants
+## Transport contract
 
-- A job can have at most one active assigned rider.
-- Only valid state transitions are accepted.
-- Pickup and delivery requirements are evaluated on the server.
-- OTP verification is rate-limited and stored as verification outcome, not raw secret.
-- Completion and ledger creation are idempotent and transactionally consistent.
-- Critical state changes have actor, timestamp, and reason.
-- Financial ledger entries are append-only; corrections use compensating entries.
-- Admin overrides require permission and an audit reason.
-- Sensitive document/proof links are time-limited and access-controlled.
+The generic HTTP layer supports safe result unions, runtime decoders, timeout/cancellation, standard HTTP error mapping, request IDs and explicit idempotency. Endpoint names and field summaries in `services/api/catalog.ts` are a draft for backend review. The backend team's approved OpenAPI schema must replace assumptions before live wiring.
 
-## 6.4 API behaviour guidelines
+Do not install a database client in order to call HTTP endpoints. Do not infer rider identity or permissions from editable profile fields. Never sum arbitrary client events into a payable balance.
 
-- Use authenticated, role-scoped endpoints.
-- Validate request schemas and eligibility server-side.
-- Use idempotency keys for retryable mutations.
-- Return stable error codes for invalid transition, expired offer, missing proof, ineligible rider, and rate limit.
-- Include correlation IDs for support/debugging.
-- Avoid returning internal fraud thresholds or sensitive detection details to untrusted clients.
-- Version APIs and maintain backward compatibility for supported app versions.
+## Release boundaries
 
-## 6.5 Reliability and security
-
-- Use database transactions or equivalent atomic operations for assignment, completion, and money movement.
-- Queue non-critical work such as notifications and analytics.
-- Apply retry/backoff and dead-letter handling for failed asynchronous events.
-- Monitor latency, error rates, stale location, queue lag, payout failures, and unusual job transitions.
-- Encrypt data in transit and at rest; apply least privilege and retention limits.
-- Back up critical records and periodically test recovery.
-
-## 6.6 Open technical decisions
-
-- Mobile stack and supported Android versions.
-- Backend framework and database.
-- WebSocket/MQTT/polling choice for real-time updates.
-- Maps and routing provider.
-- OTP/push provider.
-- KYC/document verification provider.
-- Payment and payout provider.
-- Object storage and retention policy.
+Mock mode supports previewing the existing screens without a backend. API mode is gated until adapters are implemented. Production configuration rejects mock data and unresolved integration evidence. The native app still needs device testing, approved notification/location setup, real API acceptance and a reviewed dependency advisory report.

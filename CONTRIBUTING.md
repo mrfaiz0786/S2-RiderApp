@@ -1,31 +1,29 @@
-# Contributing
+# Contributing to the YBM mobile client
 
-## Before changing code
+## Scope and setup
 
-Run `npm ci` inside `mobile-app`, then `npm run check`. Keep the lockfile with dependency changes. Do not run `npm audit fix --force` without reviewing compatibility and testing the result.
+This is the rider application only. The backend team owns APIs, database/server code, identity/notification/payment providers and operational processes. Do not add SQL migrations, provider admin SDKs or server secrets here.
 
-## Adding a screen
+Use supported Node 24.x and `npm ci` inside `mobile-app`. Run `npm run check` before and after changes. Commit lockfile changes with package changes. Use `npx expo install` for Expo native libraries and check compatibility; never run `npm audit fix --force` to silence warnings without reviewing the proposed version changes.
 
-1. Choose its owner under `src/features/<feature>/screens` and give it a descriptive PascalCase name.
-2. Put feature-only reusable UI in `components`; truly reusable UI in `shared/ui`.
-3. Add a string route to `navigation/routes.ts`, then register its component in `ScreenRenderer.tsx`. The typed registry rejects missing routes.
-4. Define explicit tab/active-delivery metadata. Never compare route IDs numerically. Update the expected route count in architecture checks/tests when intentionally adding screens.
-5. Add reducer/selector tests for behavior and update the manual screen checklist.
+## Structure and state
 
-## State and dependency rules
+Keep feature-only UI/model code under `src/features/<feature>`. Shared UI goes in `src/shared/ui`; app composition owns provider order. Use `@/` aliases and typed named routes. Register new screens in `navigation/routes.ts` and `ScreenRenderer.tsx`, and update route tests intentionally. Shared code must not import features or app composition; services must not import UI.
 
-Local input, search, sheet visibility and filters stay local to their screen. Cross-screen feature state belongs to that feature's model. Use pure reducers for transitions. Use the public `model` entry point rather than importing a store implementation from unrelated UI. Demo fixture sharing is explicit and temporary. Features do not import app composition; shared code never imports feature screens. The composition root may connect features.
+Keep OTP/PIN entry, search, filters and sheet visibility local to screens. Use feature models for cross-screen feature state. Authenticated API cache must be scoped to the current rider and cleared on account change. Abort pending work and reject stale results on navigation/session changes. Client state never approves a rider, assigns an order or settles money.
 
-Use `@/` imports from the source root and relative imports within a small feature. No explicit `any`, unsafe route assertions or duplicated credential checks. Runtime authorization, idempotency, secrets and money calculations belong on a real backend, not in client state.
+## API integration
 
-## UI and branding
+Review `docs/api/backend-api-requirements.md` and the backend team's approved OpenAPI schema. The current catalog is a draft, not a binding server contract. Change it to match the approved API, add runtime response decoders and feature adapters, and run `npm run api:docs` so generated documentation stays in sync.
 
-Use `shared/theme`, `BrandButton`, `BrandSheet` and existing motion primitives. Keep native permission dialogs native. Avoid adding another animation or component framework without a concrete need. Preserve reduced-motion behavior and accessible labels. Do not copy competitor artwork into app assets.
+Use `services/api` for JSON requests. Do not fetch directly from screens or attach bearer tokens to arbitrary signed upload URLs. Never log credentials, OTPs, PINs, raw KYC data or complete sensitive API bodies. Show safe local errors and use request IDs for diagnostics. Mutation timeouts have unknown outcomes: reconcile before retrying, and retain the same idempotency key for the same logical action. Do not implement automatic mutation replay without a reviewed recovery design.
 
-## Before handing off
+Native secure-session storage and refresh coordination exist but are not yet wired to real screen authentication. Server logout/revocation, device unregistration, storage failures and account switching need joint tests. Mock credentials never authorize live requests. Production integration flags require recorded evidence, not just a configured URL.
 
-Run `npm run format`, `npm run check`, then `npm run export:android`. Complete the manual device checklist for the changed screens. Report what was actually tested; a bundle export is not a device pass. Never commit `.env`, signing credentials, dependency directories, generated exports, or local backups.
+## UI, native capabilities and release
 
-## Automation
+Preserve approved logo, theme, fonts, motion and accessible labels. Keep OS permission prompts native. Add camera/location/notification permissions only for implemented flows, with denied/permanently-denied handling and clear user purpose. Do not add another component/navigation framework without a concrete need.
 
-A GitHub Actions workflow is supplied, but runs only after the workspace is placed in a GitHub repository with Actions enabled. This task does not create a repository, push code or deploy.
+Before handoff run `npm run format`, `npm run check`, `npm run check:expo`, `npm run doctor` and `npm run export:android`. Review dependency advisories separately. Complete physical Android regression for keyboard/back gestures, large text, TalkBack, cold start, network loss, background/resume, token refresh and active delivery recovery. A JavaScript export is not an APK or device pass.
+
+Never commit `.env`, signing material, service accounts, dependency/build folders or `.mcp-backups`. Recovery copies may contain historical credentials. Do not upload them. No commit, push, deployment or cloud build is implicit in a local validation run.

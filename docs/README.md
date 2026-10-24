@@ -1,21 +1,27 @@
 # Documentation index
 
-## Active engineering documentation
+## Current mobile implementation
 
-- `architecture/codebase-map.md`: layers, screen inventory and ownership.
-- `architecture/integration-boundaries.md`: what is demo-only and what production still needs.
-- `architecture/refactor-validation.md`: local checks and pending device testing.
-- `architecture/verification-results.json`: recorded final results, once validation completes.
-- `../CONTRIBUTING.md`: development workflow and rules for adding features.
-- `../mobile-app/README.md`: setup, commands and demo codes.
+- `architecture/codebase-map.md`: source layers, state ownership and 21-screen inventory.
+- `architecture/integration-boundaries.md`: mobile/backend responsibility split and actual integration status.
+- `mobile-validation.md`: verified checks and outstanding native/API acceptance.
+- `mobile-only-cleanup.md`: cleanup inventory and local recovery instructions.
+- `../mobile-app/README.md`: setup, public configuration, mock mode and build profiles.
+- `../CONTRIBUTING.md`: client development conventions.
 
-## Product planning reference
+## Backend-team handoff
 
-The original numbered documents 01-07 and `manual-test-checklist.md` are retained as historical planning inputs. Some reference the earlier 18- or 19-screen layout. The current codebase has 21 named routes; use the architecture inventory for its current structure.
+- [YBM backend API checklist](api/YBM_Backend_API_Checklist.md): shareable checklist of 64 proposed operations and backend-team deliverables.
+- `api/backend-api-requirements.md`: protocol requirements, critical flows, ownership and delivery checklist.
+- `api/endpoint-catalog.md`: complete draft operation list with methods, paths, input/output fields and auth requirements.
+- `api/api-catalog.json`: machine-readable inventory generated from the mobile operation catalog.
 
-## Brand source of truth
+These are requirements to review with the external backend team, not a backend implementation or an approved API specification.
 
-Tokens: `../mobile-app/src/shared/theme/index.ts`.
-Components: `../mobile-app/src/shared/ui/`.
+## Product and visual references
+
+Numbered product documents describe intended product behavior; admin/provider/database work mentioned there belongs to the backend team. `06-architecture-and-data-model.md` now documents the mobile-client architecture. Older refactor/brand validation files are historical, not evidence of today's build or device tests.
+
+Brand tokens: `../mobile-app/src/shared/theme/index.ts`.
 Runtime assets: `../mobile-app/assets/brand/`.
-Original visual references: `../design/reference/`.
+Original extracted design references: `../design/reference/`.

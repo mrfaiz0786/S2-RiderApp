@@ -198,6 +198,9 @@ export const tabs = [
   { name: "history", label: "History", icon: "history" },
   { name: "profile", label: "Profile", icon: "account-outline" },
 ] as const;
+export function isTabName(value: unknown): value is TabName {
+  return typeof value === "string" && tabs.some((tab) => tab.name === value);
+}
 export function isRouteName(value: unknown): value is RouteName {
   return typeof value === "string" && routes.some((route) => route.name === value);
 }

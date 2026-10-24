@@ -1,20 +1,30 @@
-# Dependencies, generated output and local recoverable archives
+# Dependencies and generated output
 node_modules/
 node_modules.repair-backup/
 .expo*/
 .theme-backup*/
-.mcp-backups/
-archive/
 dist/
 coverage/
+.validation/
 *.log
 *.tsbuildinfo
+
+# Local recovery material (may contain old private environment files)
+.mcp-backups/
+archive/
+
+# Local environment and native credentials
 .env
 .env.*
 !.env.example
-.DS_Store
-Thumbs.db
 *.keystore
 *.jks
 *.p12
 *.mobileprovision
+mobile-app/google-services.json
+mobile-app/GoogleService-Info.plist
+**/*service-account*.json
+
+# OS files
+.DS_Store
+Thumbs.db

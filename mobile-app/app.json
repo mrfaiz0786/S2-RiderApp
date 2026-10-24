@@ -6,11 +6,6 @@
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "icon": "./assets/brand/ybm-app-icon.png",
-    "splash": {
-      "image": "./assets/brand/ybm-mark.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#F8F7F3"
-    },
     "android": {
       "package": "online.aadityakumar.ybmrider",
       "adaptiveIcon": {
@@ -29,7 +24,8 @@
           "backgroundColor": "#F8F7F3"
         }
       ],
-      "expo-font"
+      "expo-font",
+      "expo-secure-store"
     ]
   }
 }

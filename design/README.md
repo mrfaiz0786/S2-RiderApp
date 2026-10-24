@@ -1,7 +1,7 @@
 # Design references
 
-`reference/` contains the original Stitch UI kit and its ZIP, moved intact from the workspace root. These are reference material, not the source of the live application. Older documents may still refer to the original folder name.
+`reference/` retains the extracted original Stitch UI kit as a visual reference. Runtime app images are in `mobile-app/assets/brand/`; tokens and fonts are in `mobile-app/src/shared/theme/`.
 
-`legacy-assets/` preserves the original generic icon and splash images. The current app uses `mobile-app/assets/brand/` and the Warm Momentum tokens in `mobile-app/src/shared/theme/index.ts`.
+During the mobile-only cleanup, obsolete generic icons/splash assets and the duplicate reference ZIP were moved into `.mcp-backups/mobile-only-20261024/removed/design/`. The extracted design source and approved YBM brand assets were retained.
 
-Do not replace the user's approved logo with competitor graphics. Changes to design references do not automatically update app screens.
+Do not replace the approved logo or theme while connecting APIs. Editing reference material does not automatically change the running application.

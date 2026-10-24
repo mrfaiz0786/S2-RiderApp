@@ -1,4 +1,4 @@
-import { defaultBackRoute, isRouteName, type RouteName, type TabName } from "./routes";
+import { defaultBackRoute, isRouteName, isTabName, type RouteName, type TabName } from "./routes";
 export type NavigationState = { route: RouteName; history: RouteName[] };
 export type NavigationAction =
   | { type: "navigate"; target: RouteName }
@@ -15,7 +15,9 @@ export function navigationReducer(
         ? state
         : { route: action.target, history: [...state.history, state.route].slice(-50) };
     case "selectTab":
-      return { route: action.target, history: action.target === "home" ? [] : ["home"] };
+      return isTabName(action.target)
+        ? { route: action.target, history: action.target === "home" ? [] : ["home"] }
+        : state;
     case "back":
       return {
         route: state.history.at(-1) || defaultBackRoute(state.route),

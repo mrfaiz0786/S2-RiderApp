@@ -32,8 +32,8 @@ export class AppErrorBoundary extends Component<
               color: theme.colors.textSecondary,
             }}
           >
-            Restart this local preview to try again. Unsaved demo progress will be cleared. No real
-            service was contacted.
+            Restart the app view to try again. Unsaved input may be cleared. Before repeating an
+            order or payment action, check its current status.
           </Text>
           <Pressable
             accessibilityRole="button"

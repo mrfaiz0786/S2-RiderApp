@@ -1,4 +1,4 @@
-/** Integration contracts only. No network client or backend URL is configured. */
+/** Shared client contracts. Backend implementation lives in another team's repository. */
 export type IntegrationName =
   | "authentication"
   | "documents"
@@ -8,8 +8,8 @@ export type IntegrationName =
   | "payouts"
   | "support"
   | "emergency";
-export type IntegrationCapability = { enabled: false; reason: string };
-export type RequestContext = { requestId: string; idempotencyKey?: string; signal?: AbortSignal };
+export type IntegrationCapability = { enabled: boolean; reason: string };
+export type RequestContext = { requestId?: string; idempotencyKey?: string; signal?: AbortSignal };
 export type ServiceResult<T> =
   | { ok: true; data: T }
   | {

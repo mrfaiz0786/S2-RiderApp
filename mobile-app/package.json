@@ -5,15 +5,22 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
+    "start:go": "expo start --go",
+    "start:dev": "expo start --dev-client",
     "android": "expo start --android",
+    "android:native": "expo run:android",
     "ios": "expo start --ios",
     "web": "expo start --web",
     "typecheck": "tsc --noEmit",
     "check:architecture": "node scripts/check-architecture.cjs",
+    "check:expo": "expo install --check",
+    "doctor": "npx expo-doctor",
+    "api:docs": "node scripts/generate-api-docs.cjs",
+    "api:docs:check": "node scripts/generate-api-docs.cjs --check",
     "test": "node scripts/test.cjs",
-    "format": "prettier --write App.tsx src tests scripts package.json tsconfig.json app.json",
-    "format:check": "prettier --check App.tsx src tests scripts package.json tsconfig.json app.json",
-    "check": "npm run typecheck && npm run check:architecture && npm test && npm run format:check",
+    "format": "prettier --write App.tsx app.config.js src tests scripts package.json tsconfig.json app.json eas.json",
+    "format:check": "prettier --check App.tsx app.config.js src tests scripts package.json tsconfig.json app.json eas.json",
+    "check": "npm run typecheck && npm run check:architecture && npm run api:docs:check && npm test && npm run format:check",
     "export:android": "expo export --platform android --output-dir dist/android",
     "refactor:imports": "node scripts/organize-imports.cjs",
     "assets:brand": "node scripts/build-brand-assets.cjs"
@@ -21,13 +28,21 @@
   "dependencies": {
     "@expo-google-fonts/nunito-sans": "^0.4.2",
     "@expo/vector-icons": "^15.0.2",
-    "expo": "~57.0.0",
+    "expo": "~57.0.31",
+    "expo-constants": "~57.0.22",
+    "expo-dev-client": "~57.0.20",
+    "expo-device": "~57.0.2",
     "expo-font": "~57.0.4",
+    "expo-notifications": "~57.0.24",
+    "expo-secure-store": "~57.0.4",
     "expo-splash-screen": "~57.0.10",
     "expo-status-bar": "~57.0.1",
     "react": "19.2.3",
+    "react-dom": "19.2.3",
     "react-native": "0.86.3",
-    "react-native-safe-area-context": "~5.7.0"
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-url-polyfill": "^4.0.0",
+    "react-native-web": "^0.21.2"
   },
   "devDependencies": {
     "@types/react": "~19.2.0",
@@ -36,6 +51,6 @@
     "typescript": "~6.0.3"
   },
   "engines": {
-    "node": ">=24 <25"
+    "node": ">=24.22.1 <25"
   }
 }

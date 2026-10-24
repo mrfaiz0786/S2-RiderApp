@@ -50,11 +50,12 @@ test("all external capabilities remain explicitly disconnected", () => {
 test("rupee formatting preserves Indian grouping", () => assert.equal(money(123456), "₹1,23,456"));
 test("all configured brand assets exist", () => {
   const config = JSON.parse(fs.readFileSync(path.join(root, "app.json"), "utf8")).expo;
-  for (const asset of [
-    config.icon,
-    config.splash.image,
-    config.android.adaptiveIcon.foregroundImage,
-  ])
+  const splash = config.plugins.find(
+    (plugin) => Array.isArray(plugin) && plugin[0] === "expo-splash-screen",
+  );
+  assert.ok(splash, "Native splash configuration must use the Expo plugin");
+  assert.equal(config.splash, undefined, "Removed legacy splash field must not return");
+  for (const asset of [config.icon, splash[1].image, config.android.adaptiveIcon.foregroundImage])
     assert.ok(fs.existsSync(path.join(root, asset)));
 });
 test("entry file only delegates to the application", () => {

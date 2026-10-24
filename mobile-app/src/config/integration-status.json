@@ -1,0 +1,6 @@
+{
+  "contractApproved": false,
+  "screensConnected": false,
+  "deviceTestsPassed": false,
+  "note": "Backend-team contract, screen adapters and physical-device acceptance are pending. Change these only after evidence is recorded in docs/mobile-validation.md."
+}

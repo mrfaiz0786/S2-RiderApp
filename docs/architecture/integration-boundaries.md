@@ -1,24 +1,34 @@
-# Integration boundaries
+# Mobile and backend integration boundaries
 
-The running app is explicitly a demo. All eight entries in `src/services/capabilities.ts` are disabled. Contract types are extension points, not evidence of a connected provider. There is no backend address, API key or network client.
+## Ownership
 
-## Current versus future
+The mobile team owns screens, navigation, input UX, runtime DTO validation, safe session storage, permission prompts, client retry/cancellation handling, location/device-token capture, accessible feedback and native builds.
 
-| Area | Current | Required before production |
+The backend team owns authentication and OTP generation, account authorization, KYC provider integration, private object-storage authorization, rider approval, dispatch and atomic offer assignment, authoritative job transitions and PIN verification, notification sending, financial records and settlement, support routing, emergency escalation, data retention and operational monitoring.
+
+A native push registration file or restricted maps client key may still be required in a mobile build. That is client configuration, not permission to place provider admin credentials in the app.
+
+## Current code versus completed integration
+
+| Area | Implemented locally | Still needed |
 |---|---|---|
-| Authentication | Public test OTP | Server-issued challenge, expiry, throttling, session lifecycle |
-| Documents | Sample status changes | Authorized verification, consent, access-controlled upload, review |
-| Dispatch | Client demo state machine | Atomic assignment, server eligibility, expiry, idempotency |
-| Location | Illustration and manual city choice | Permissions, accuracy/freshness, background testing |
-| Notifications | Static in-app items | Registered device tokens, channels, push and state reconciliation |
-| Money | Fictional fixed records | Ledger, reconciliation, transparent adjustments and payouts |
-| Support | Preview messages | Real case creation, routing and resolution history |
-| Safety | Explicit not-connected notice | Tested escalation, acknowledgement and failure recovery |
+| User experience | Original 21 screens and mock reducers | Backend DTO-to-screen adapters, real loading/error/empty states and authenticated route guards |
+| Networking | HTTPS-only JSON client, timeout, abort, typed errors, decoder boundary, idempotency enforcement for catalog mutations | Approved contract, staging URL, response schemas and integration tests |
+| Sessions | Native SecureStore adapter, serialized writes, refresh coordinator, logout-race protection | Actual login/refresh/logout adapters and provider composition; native acceptance |
+| Notifications | Optional permission/native-token acquisition | Backend registration, token rotation/unregister, listeners, cold-start routing and delivery testing |
+| Documents/location | Product requirements and API catalog | Mobile picker/camera/upload/location adapters and approved native permissions |
+| Dispatch/money/safety | Clearly fictional preview and API requirements | Approved backend behavior and end-to-end mobile workflow tests |
 
-Client transition guards protect prototype consistency; they are not security controls. Never turn the mode label into production without implementing and testing those server contracts. Do not put secret keys in a mobile bundle, source repository or `EXPO_PUBLIC_` configuration.
+All eight capability entries remain disabled. Configuration alone does not make a feature available. API mode currently renders an explicit integration-pending gate instead of silently presenting demo data. Production configuration is blocked until verified work is recorded.
 
-## Intentional behavior corrections during extraction
+## Security and retry contract
 
-Login OTP and delivery PIN no longer share input state. Work-city changes clear the selected hub; invalid city/hub combinations are rejected. Pickup requires an accepted sample offer. Completion requires pickup and the local test PIN. Declining an offer cannot erase an accepted delivery. Repeated completion is a reducer no-op. Reset clears the entire demo session rather than retaining some entered personal details.
+Every protected API request uses a session-issued bearer token. The app does not receive database credentials, provider secrets, static authentication tokens or raw recipient PINs in GET responses. Signed uploads use a separate, constrained upload transport with only the exact headers returned by the backend; never reuse the authenticated API client against an arbitrary storage URL.
 
-No claim is made that these checks verify real pickup, real delivery or a real person. History/earnings fixtures are not made into a ledger by this refactor.
+A timeout after accepting a job or confirming delivery may mean the server succeeded. Fetch the canonical offer/job state before repeating the operation. Preserve the same idempotency key for the same logical attempt, including across restart when a pending-action store is implemented; generate a new key only for a genuinely new action. No automatic mutation retry or offline completion is implemented here.
+
+Push payloads and local reducers cannot approve riders, assign jobs or create money. Treat push as a hint to fetch current server state. Reconcile out-of-order events using resource versions. On logout/account switching, abort pending requests, reset feature/navigation state, unregister the old device binding, revoke the server session and clear local credentials with visible failure handling.
+
+## Remaining mobile work, not backend work
+
+Authenticated navigation and restored sessions, feature API adapters, upload progress/retry, permission-denied screens, background location, event reconnection, native notification handling, localization completion, observability with redaction and device regression remain client integration tasks. Do not hide those tasks behind a backend-completion claim.
